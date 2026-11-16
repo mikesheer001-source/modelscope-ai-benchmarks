@@ -33,7 +33,7 @@ The workflow deploys automatically on push to `main`, or it can be run manually 
 
 ## November 17, 2026 snapshot
 
-The current view contains **65 configurations from 8 model developers**. This refresh verified 446 figures against Artificial Analysis, updating 280 figures and carrying forward 235 figures where a current value could not be verified. Unavailable measurements are blank.
+The current view contains **70 configurations from 8 model developers**. This refresh verified 446 figures against Artificial Analysis, updating 280 figures and carrying forward 235 figures where a current value could not be verified. Claude Fable 5.2 adds five effort levels with 55 published figures. Unavailable measurements are blank.
 
 The X-axis uses published weighted USD cost per Intelligence Index task for every Y-axis metric. Published zero costs appear on the linear axis. The logarithmic axis requires positive costs. The frontier compares eligible configurations across the enabled families, including ties at the same cost and score. Zoom and pan change the viewport.
 

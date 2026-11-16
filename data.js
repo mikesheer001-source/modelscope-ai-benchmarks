@@ -69,7 +69,12 @@ window.AI_BENCHMARK_DATA = {
     ["Gemini 3.5 Flash-Lite","Gemini 3.5 Flash-Lite",0.69,12,null,null,null,null,null,null,null,null,null],
     ["GPT-6 Luna (low)","GPT-6 Luna",0.0051,10,740,12,9,2.2,0,1,9.5,-18,10.2],
     ["GPT-6 Luna (non-reasoning)","GPT-6 Luna",0.0714,9,903,9.1,5.8,1.6,1.5,1,5,null,6.3],
-    ["Muse Glimmer (high)","Muse Glimmer",0.18,6,null,null,null,null,null,null,null,null,null]
+    ["Muse Glimmer (high)","Muse Glimmer",0.18,6,null,null,null,null,null,null,null,null,null],
+    ["Claude Fable 5.2 (Max, Default Fallback)","Claude Fable 5.2",26.54,65,1785,76.4,24.2,48.8,59.6,73.3,76.5,67,80.2],
+    ["Claude Fable 5.2 (Xhigh, Default Fallback)","Claude Fable 5.2",14.83,62,1738,74.2,21.4,47.6,61.6,67.6,73.5,65,75.8],
+    ["Claude Fable 5.2 (High, Default Fallback)","Claude Fable 5.2",9.08,62,1677,71.4,21.8,49.1,59.6,70,73,64,73.8],
+    ["Claude Fable 5.2 (Medium, Default Fallback)","Claude Fable 5.2",3.8,56,1622,68.8,23.8,41.3,55.1,60.5,61.5,64,66.3],
+    ["Claude Fable 5.2 (Low, Default Fallback)","Claude Fable 5.2",3.1,54,1563,68,26.8,38.4,54.5,53.8,60,63,60.8]
   ],
   "model_sources": {
     "Gemini 4 Carbon (high)": "https://artificialanalysis.ai/models/gemini-4-carbon",
@@ -136,7 +141,12 @@ window.AI_BENCHMARK_DATA = {
     "GPT-6 Luna (low)": "https://artificialanalysis.ai/models/gpt-6-luna-low",
     "GPT-6 Luna (non-reasoning)": "https://artificialanalysis.ai/models/gpt-6-luna-non-reasoning",
     "Muse Glimmer (high)": "https://artificialanalysis.ai/models/muse-glimmer",
-    "Kimi K3 (max)": "https://artificialanalysis.ai/models/kimi-k3"
+    "Kimi K3 (max)": "https://artificialanalysis.ai/models/kimi-k3",
+    "Claude Fable 5.2 (Max, Default Fallback)": "https://artificialanalysis.ai/models/claude-fable-5-2",
+    "Claude Fable 5.2 (Xhigh, Default Fallback)": "https://artificialanalysis.ai/models/claude-fable-5-2-xhigh",
+    "Claude Fable 5.2 (High, Default Fallback)": "https://artificialanalysis.ai/models/claude-fable-5-2-high",
+    "Claude Fable 5.2 (Medium, Default Fallback)": "https://artificialanalysis.ai/models/claude-fable-5-2-medium",
+    "Claude Fable 5.2 (Low, Default Fallback)": "https://artificialanalysis.ai/models/claude-fable-5-2-low"
   },
   "component_sources": {
     "Muse Wonder Full (max)": "https://artificialanalysis.ai/models/comparisons/claude-opus-5-5-vs-muse-wonder-full",
@@ -200,7 +210,12 @@ window.AI_BENCHMARK_DATA = {
     "GPT-6 Luna (low)": "https://artificialanalysis.ai/models/comparisons/claude-haiku-5-5-low-vs-gpt-6-luna-low",
     "Kimi K3 (max)": "https://artificialanalysis.ai/models/comparisons/kimi-k3-1-pro-vs-kimi-k3",
     "Muse Wonder (high)": "https://artificialanalysis.ai/models/comparisons/gemini-4-carbon-vs-muse-wonder-high",
-    "GPT-6 Luna (non-reasoning)": "https://artificialanalysis.ai/models/comparisons/claude-haiku-5-5-low-vs-gpt-6-luna-low"
+    "GPT-6 Luna (non-reasoning)": "https://artificialanalysis.ai/models/comparisons/claude-haiku-5-5-low-vs-gpt-6-luna-low",
+    "Claude Fable 5.2 (Max, Default Fallback)": "https://artificialanalysis.ai/models/comparisons/claude-fable-5-2-low-vs-claude-fable-5-2",
+    "Claude Fable 5.2 (Xhigh, Default Fallback)": "https://artificialanalysis.ai/models/comparisons/claude-fable-5-2-vs-claude-fable-5-2-xhigh",
+    "Claude Fable 5.2 (High, Default Fallback)": "https://artificialanalysis.ai/models/comparisons/claude-fable-5-2-high-vs-gpt-6-1-terra-non-reasoning",
+    "Claude Fable 5.2 (Medium, Default Fallback)": "https://artificialanalysis.ai/models/comparisons/claude-fable-5-2-medium-vs-claude-sonnet-5-5-xhigh",
+    "Claude Fable 5.2 (Low, Default Fallback)": "https://artificialanalysis.ai/models/comparisons/claude-fable-5-2-low-vs-gpt-6-1-sol"
   },
   "creators": {
     "Gemini 4 Carbon": "Google",
@@ -222,10 +237,11 @@ window.AI_BENCHMARK_DATA = {
     "Muse Spark": "Meta",
     "Gemini 3.5 Flash-Lite": "Google",
     "Muse Glimmer": "Meta",
-    "Kimi K3": "Kimi"
+    "Kimi K3": "Kimi",
+    "Claude Fable 5.2": "Anthropic"
   },
   "review": {
-    "verified_figures": 446,
+    "verified_figures": 501,
     "retained_figures": 235
   }
 };

@@ -31,7 +31,8 @@ el('suite-status').textContent=archive?'October archive':'Benchmark snapshot';
 el('methodology-current').hidden=archive;
 el('methodology-archive').hidden=!archive;
 if(!archive)el('benchmark-coverage').textContent=rows.filter(r=>r.scores.slice(1).every(Number.isFinite)).length
- +' of '+rows.length+' configurations have all nine component scores in this snapshot.';
+ +' of '+rows.length+' configurations have all nine component scores in this snapshot.'
+ +(payload.review?' '+payload.review.verified_figures+' figures were checked against current source tables. '+payload.review.retained_figures+' figures carry over from the earlier snapshot.':'');
 const suiteLink=el('switch-suite');
 suiteLink.href=archive?'./':'?suite=v4';
 suiteLink.textContent=archive?'Return to current benchmarks ↗':'View October archive ↗';
@@ -54,7 +55,7 @@ indexMetric,
 {key:'briefcase',short:'AA-Briefcase',name:'AA-Briefcase v1.1',unit:'Elo-style score',desc:'Professional tasks with file deliverables · 15% weight',pos:1},
 {key:'automation',short:'AutomationBench-AA',name:'AutomationBench-AA',unit:'%',desc:'SaaS workflow completion with guardrails · 5% weight',pos:2},
 {key:'gdppdf',short:'GDP.pdf',name:'GDP.pdf',unit:'%',desc:'Professional document reasoning · 5% weight',pos:3},
-{key:'frontiercode',short:'FrontierCode 2.0',name:'FrontierCode 2.0',unit:'%',desc:'Open-source coding tasks graded on merge readiness · 15% weight',pos:4},
+{key:'frontiercode',short:'FrontierCode-AA 2.0',name:'FrontierCode-AA 2.0',unit:'%',desc:'Open-source coding tasks graded on merge readiness · 15% weight',pos:4},
 {key:'terminal',short:'Terminal-Bench 4.0',name:'Terminal-Bench 4.0',unit:'%',desc:'Agentic coding and terminal tasks · 10% weight',pos:5},
 {key:'science',short:'Terminal-Bench-Science',name:'Terminal-Bench-Science 0.1',unit:'%',desc:'Terminal-based scientific research tasks · 15% weight',pos:6},
 {key:'critpt',short:'CritPt v2',name:'CritPt v2 (Hard Subset)',unit:'%',desc:'Physics research problems · 10% weight',pos:7},

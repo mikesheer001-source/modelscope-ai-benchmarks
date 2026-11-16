@@ -24,16 +24,16 @@ A standalone, mobile-friendly explorer for Artificial Analysis benchmark results
 
 ## Publishing
 
-**Repository:** https://github.com/mikesheer001-source/Repository-4
+**Repository:** https://github.com/mikesheer001-source/modelscope-ai-benchmarks
 
-**Expected GitHub Pages URL once enabled:** https://mikesheer001-source.github.io/Repository-4/
+**Expected GitHub Pages URL once enabled:** https://mikesheer001-source.github.io/modelscope-ai-benchmarks/
 
 If deployment has not started, open **Settings → Pages → Build and deployment → Source → GitHub Actions**.
 The workflow deploys automatically on push to `main`, or it can be run manually in **Actions → Publish ModelScope to GitHub Pages → Run workflow**.
 
-## November 6, 2026 snapshot
+## November 17, 2026 snapshot
 
-The current view contains **65 configurations from 8 model developers**. Of these, 62 have published Intelligence Index v5.0.1 scores and costs per task, and 59 have all nine component scores. Kimi K3 (Max) has published component results and no v5.0.1 composite score or cost per task. Missing measurements are blank in the data. The source links on each model distinguish its leaderboard profile from the detailed comparison.
+The current view contains **65 configurations from 8 model developers**. This refresh verified 446 figures against Artificial Analysis, updating 280 figures and carrying forward 235 figures where a current value could not be verified. Unavailable measurements are blank.
 
 The X-axis uses published weighted USD cost per Intelligence Index task for every Y-axis metric. Published zero costs appear on the linear axis. The logarithmic axis requires positive costs. The frontier compares eligible configurations across the enabled families, including ties at the same cost and score. Zoom and pan change the viewport.
 
@@ -106,11 +106,11 @@ for redistribution. A public GitHub Pages website must **not** republish Free AP
 data unless you have suitable redistribution permission or a commercial agreement.
 
 1. Create an API key at https://artificialanalysis.ai/data-api.
-2. In GitHub [Actions secrets](https://github.com/mikesheer001-source/Repository-4/settings/secrets/actions),
+2. In GitHub [Actions secrets](https://github.com/mikesheer001-source/modelscope-ai-benchmarks/settings/secrets/actions),
    add a **repository secret** named `AA_API_KEY`. Never put API keys in browser code
    or commit them.
 3. **Only after confirming redistribution rights**, in
-   [Actions variables](https://github.com/mikesheer001-source/Repository-4/settings/variables/actions),
+   [Actions variables](https://github.com/mikesheer001-source/modelscope-ai-benchmarks/settings/variables/actions),
    add a **repository variable** called `AA_PUBLIC_SHARING_ALLOWED` set to `true`.
 4. Optionally test in **Actions → Daily Artificial Analysis Update → Run workflow**.
 

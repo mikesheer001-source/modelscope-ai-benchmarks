@@ -74,7 +74,8 @@ window.AI_BENCHMARK_DATA = {
     ["Claude Fable 5.2 (Xhigh, Default Fallback)","Claude Fable 5.2",14.83,62,1738,74.2,21.4,47.6,61.6,67.6,73.5,65,75.8],
     ["Claude Fable 5.2 (High, Default Fallback)","Claude Fable 5.2",9.08,62,1677,71.4,21.8,49.1,59.6,70,73,64,73.8],
     ["Claude Fable 5.2 (Medium, Default Fallback)","Claude Fable 5.2",3.8,56,1622,68.8,23.8,41.3,55.1,60.5,61.5,64,66.3],
-    ["Claude Fable 5.2 (Low, Default Fallback)","Claude Fable 5.2",3.1,54,1563,68,26.8,38.4,54.5,53.8,60,63,60.8]
+    ["Claude Fable 5.2 (Low, Default Fallback)","Claude Fable 5.2",3.1,54,1563,68,26.8,38.4,54.5,53.8,60,63,60.8],
+    ["GPT-6 High (ChatGPT reference)","GPT-6 Sol",null,null,1266,60.1,24.4,null,26.3,17.1,null,null,null]
   ],
   "model_sources": {
     "Gemini 4 Carbon (high)": "https://artificialanalysis.ai/models/gemini-4-carbon",
@@ -146,7 +147,8 @@ window.AI_BENCHMARK_DATA = {
     "Claude Fable 5.2 (Xhigh, Default Fallback)": "https://artificialanalysis.ai/models/claude-fable-5-2-xhigh",
     "Claude Fable 5.2 (High, Default Fallback)": "https://artificialanalysis.ai/models/claude-fable-5-2-high",
     "Claude Fable 5.2 (Medium, Default Fallback)": "https://artificialanalysis.ai/models/claude-fable-5-2-medium",
-    "Claude Fable 5.2 (Low, Default Fallback)": "https://artificialanalysis.ai/models/claude-fable-5-2-low"
+    "Claude Fable 5.2 (Low, Default Fallback)": "https://artificialanalysis.ai/models/claude-fable-5-2-low",
+    "GPT-6 High (ChatGPT reference)": "https://artificialanalysis.ai/models/gpt-6-sol-high"
   },
   "component_sources": {
     "Muse Wonder Full (max)": "https://artificialanalysis.ai/models/comparisons/claude-opus-5-5-vs-muse-wonder-full",
@@ -215,7 +217,8 @@ window.AI_BENCHMARK_DATA = {
     "Claude Fable 5.2 (Xhigh, Default Fallback)": "https://artificialanalysis.ai/models/comparisons/claude-fable-5-2-vs-claude-fable-5-2-xhigh",
     "Claude Fable 5.2 (High, Default Fallback)": "https://artificialanalysis.ai/models/comparisons/claude-fable-5-2-high-vs-gpt-6-1-terra-non-reasoning",
     "Claude Fable 5.2 (Medium, Default Fallback)": "https://artificialanalysis.ai/models/comparisons/claude-fable-5-2-medium-vs-claude-sonnet-5-5-xhigh",
-    "Claude Fable 5.2 (Low, Default Fallback)": "https://artificialanalysis.ai/models/comparisons/claude-fable-5-2-low-vs-gpt-6-1-sol"
+    "Claude Fable 5.2 (Low, Default Fallback)": "https://artificialanalysis.ai/models/comparisons/claude-fable-5-2-low-vs-gpt-6-1-sol",
+    "GPT-6 High (ChatGPT reference)": "https://artificialanalysis.ai/models/comparisons/gpt-6-1-sol-high-vs-gpt-6-sol-high"
   },
   "creators": {
     "Gemini 4 Carbon": "Google",
@@ -238,10 +241,14 @@ window.AI_BENCHMARK_DATA = {
     "Gemini 3.5 Flash-Lite": "Google",
     "Muse Glimmer": "Meta",
     "Kimi K3": "Kimi",
-    "Claude Fable 5.2": "Anthropic"
+    "Claude Fable 5.2": "Anthropic",
+    "GPT-6 Sol": "OpenAI"
   },
   "review": {
-    "verified_figures": 501,
+    "verified_figures": 506,
     "retained_figures": 235
+  },
+  "model_status": {
+    "GPT-6 High (ChatGPT reference)": "GPT-6 Sol High API evaluation"
   }
 };

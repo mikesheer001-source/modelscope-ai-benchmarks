@@ -124,6 +124,11 @@ try{
 }catch(e){return normalize(state);}
 }
 state=loadSettings();
+const gpt6High=rows.find(r=>r.name===(archive?'GPT-6 Sol high':"GPT-6 High (ChatGPT reference)"));
+if(params.get('focus')==='gpt-6-high'&&gpt6High){
+ state=normalize({...state,metric:'index',zoom:1,start:bounds()[0],selected:gpt6High.id,
+   hidden:archive?families.filter(f=>f!==gpt6High.family):state.hidden.filter(f=>f!==gpt6High.family)});
+}
 if(archive&&params.get('focus')==='sol')state=normalize({...state,metric:'index',hidden:families.filter(f=>f!=='GPT-6 Sol'),selected:rows.find(r=>r.name==='GPT-6 Sol medium')?.id??state.selected});
 function persist(){
 try{
@@ -339,7 +344,21 @@ const a=document.createElement('small'),b=document.createElement('strong');a.tex
 const heading=document.createElement('h3');heading.textContent='All benchmark results';heading.style.cssText='font-size:12px;margin:12px 0;color:#c5daee';
 const values=document.createElement('div');values.className='detail-values';
 metrics.forEach(mm=>{const label=document.createElement('span'),value=document.createElement('strong');label.textContent=mm.name;value.textContent=formatValue(score(r,mm),mm);values.append(label,value);});
-details.append(name,sub,stats,heading,values);
+details.append(name,sub);
+if(r===gpt6High){
+ const note=document.createElement('p');
+ note.className='panel-intro';
+ note.textContent='OpenAI lists GPT-6 Sol as the model behind ChatGPT High. These figures are from the GPT-6 Sol High API evaluation.';
+ details.append(note);
+ if(!archive){
+  const historicalLink=document.createElement('a');
+  historicalLink.className='detail-link';
+  historicalLink.href='?suite=v4&focus=gpt-6-high#benchmark-chart';
+  historicalLink.textContent='View the historical API chart (v4.3.2) ↗';
+  details.append(historicalLink);
+ }
+}
+details.append(stats,heading,values);
 const links=document.createElement('div');links.className='source-links';
 const sources=[['Artificial Analysis model ↗',payload.model_sources?.[r.name]||payload.sources?.[r.family]||leaderboard]];
 if(payload.component_sources?.[r.name])sources.push(['Component score source ↗',payload.component_sources[r.name]]);

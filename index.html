@@ -10,7 +10,7 @@
 <script defer src="./data.js?v=20261117-gpt6-high"></script>
 <script defer src="./archive-data.js?v=20261028"></script>
 <script defer src="./updates.js?v=20261106"></script>
-<script defer src="./app.js?v=20261117-gpt6-high"></script>
+<script defer src="./app.js?v=20261117-gpt6-high-plot"></script>
 </head>
 <body>
 <header class="site-header">
@@ -60,7 +60,7 @@
     <div class="mode-grid">
       <div class="mode-card"><strong>Instant</strong><span>Fast everyday responses</span><small>GPT-6 Sol on eligible plans</small></div>
       <div class="mode-card"><strong>Medium</strong><span>Standard thinking</span><small>Powered by GPT-6 Sol</small></div>
-      <div class="mode-card"><strong>GPT-6 High</strong><span>Extended thinking with GPT-6 Sol</span><a class="detail-link" href="./?focus=gpt-6-high#model-details">View benchmark reference ↗</a></div>
+      <div class="mode-card"><strong>GPT-6 High</strong><span>Extended thinking with GPT-6 Sol</span><a class="detail-link" href="./?focus=gpt-6-high#benchmark-chart">Show on chart ↗</a></div>
     </div>
     <p class="modes-footnote">ChatGPT thinking presets and benchmarked API configurations use different settings. OpenAI lists GPT-5.6 Luna for Instant on Free and Go. <a href="https://help.openai.com/en/articles/20001354-gpt-6-and-other-models-in-chatgpt" target="_blank" rel="noopener noreferrer">OpenAI's model guide ↗</a></p>
   </section>
@@ -89,7 +89,7 @@
       <input type="range" id="zoom-range" min="1" max="60" value="1" step="1" aria-label="Zoom level">
       <div class="zoom-actions"><span>1× <span class="muted">Full range</span></span><div class="zoom-buttons"><button type="button" data-zoom="1">Reset</button><button type="button" data-zoom="5">5×</button><button type="button" data-zoom="15">15×</button></div><span>60× <span class="muted">Maximum</span></span></div>
     </div>
-    <div class="chart-foot"><div class="legend" id="legend"></div><div class="foot-note">The dashed line shows the best scores at successively higher costs among eligible models. <span id="cost-note"></span></div></div>
+    <div class="chart-foot"><div class="legend" id="legend"></div><div class="foot-note">The dashed line shows the best scores at successively higher costs among eligible models. <span id="cost-note"></span> <span id="historical-chart-note" hidden>Gold diamond shows GPT-6 High’s historical API benchmark (v4.3.2). It is excluded from the current frontier.</span></div></div>
   </section>
   <section class="lower-grid">
     <div class="panel filters-panel">

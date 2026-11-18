@@ -31,9 +31,13 @@ A standalone, mobile-friendly explorer for Artificial Analysis benchmark results
 If deployment has not started, open **Settings → Pages → Build and deployment → Source → GitHub Actions**.
 The workflow deploys automatically on push to `main`, or it can be run manually in **Actions → Publish ModelScope to GitHub Pages → Run workflow**.
 
+## November 18, 2026 snapshot
+
+The current view contains **81 configurations from 8 model developers**. GPT-6.2 Astra and GPT-6.2 Sol each add five reasoning effort levels. [Artificial Analysis publishes the Intelligence Index, cost per task, and eight component scores for each setting](https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol). The AA-Omniscience net-score cells for GPT-6.2 are blank pending direct verification.
+
 ## November 17, 2026 snapshot
 
-The current view contains **71 configurations from 8 model developers**. This refresh verified 446 figures against Artificial Analysis, updating 280 figures and carrying forward 235 figures where a current value could not be verified. Claude Fable 5.2 adds five effort levels with 55 published figures. GPT-6 High links to the current GPT-6 Sol High API component results and the historical v4.3.2 chart. Unavailable measurements are blank.
+The November 17 view contained **71 configurations from 8 model developers**. This refresh verified 446 figures against Artificial Analysis, updating 280 figures and carrying forward 235 figures where a current value could not be verified. Claude Fable 5.2 adds five effort levels with 55 published figures. GPT-6 High links to the current GPT-6 Sol High API component results and the historical v4.3.2 chart. Unavailable measurements are blank.
 
 The X-axis uses published weighted USD cost per Intelligence Index task for every Y-axis metric. Published zero costs appear on the linear axis. The logarithmic axis requires positive costs. The frontier compares eligible configurations across the enabled families, including ties at the same cost and score. Zoom and pan change the viewport.
 

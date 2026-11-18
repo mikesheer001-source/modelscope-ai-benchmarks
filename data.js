@@ -1,6 +1,6 @@
-/* Public chart figures reviewed 2026-11-17. Artificial Analysis Intelligence Index v5.0.1. */
+/* Public chart figures reviewed 2026-11-18. Artificial Analysis Intelligence Index v5.0.1. */
 window.AI_BENCHMARK_DATA = {
-  "as_of": "2026-11-17",
+  "as_of": "2026-11-18",
   "index_version": "5.0.1",
   "leaderboard": "https://artificialanalysis.ai/leaderboards/models",
   "fields": ["Model","Family","Cost per Intelligence Index task USD","Intelligence Index","AA-Briefcase v1.1","AutomationBench-AA","GDP.pdf","FrontierCode-AA 2.0","Terminal-Bench 4.0","Terminal-Bench-Science 0.1","CritPt v2 (Hard Subset)","AA-Omniscience v1.1","HLE-Diamond"],
@@ -75,9 +75,29 @@ window.AI_BENCHMARK_DATA = {
     ["Claude Fable 5.2 (High, Default Fallback)","Claude Fable 5.2",9.08,62,1677,71.4,21.8,49.1,59.6,70,73,64,73.8],
     ["Claude Fable 5.2 (Medium, Default Fallback)","Claude Fable 5.2",3.8,56,1622,68.8,23.8,41.3,55.1,60.5,61.5,64,66.3],
     ["Claude Fable 5.2 (Low, Default Fallback)","Claude Fable 5.2",3.1,54,1563,68,26.8,38.4,54.5,53.8,60,63,60.8],
-    ["GPT-6 High (ChatGPT reference)","GPT-6 Sol",null,null,1266,60.1,24.4,null,26.3,17.1,null,null,null]
+    ["GPT-6 High (ChatGPT reference)","GPT-6 Sol",null,null,1266,60.1,24.4,null,26.3,17.1,null,null,null],
+    ["GPT-6.2 Astra (max)","GPT-6.2 Astra",4,62,1644,77.2,29.8,45.4,64.1,78.1,71.5,null,72.2],
+    ["GPT-6.2 Astra (xhigh)","GPT-6.2 Astra",2.52,62,1594,76.1,28,49,64.1,78.6,70.5,null,67.3],
+    ["GPT-6.2 Astra (high)","GPT-6.2 Astra",2.07,60,1570,76,28.6,47.1,60.1,75.2,71.5,null,65.9],
+    ["GPT-6.2 Sol (max)","GPT-6.2 Sol",1.01,57,1612,71.3,30,44.4,60.1,67.6,62.5,null,64],
+    ["GPT-6.2 Astra (medium)","GPT-6.2 Astra",1.62,57,1408,72.8,28.4,46.6,58.6,74.8,67.5,null,56],
+    ["GPT-6.2 Sol (xhigh)","GPT-6.2 Sol",0.65,56,1580,70.6,28.4,42.8,56.1,66.7,62.5,null,61.8],
+    ["GPT-6.2 Sol (high)","GPT-6.2 Sol",0.56,55,1541,69.9,28.8,40.2,58.6,67.6,61.5,null,58.3],
+    ["GPT-6.2 Sol (medium)","GPT-6.2 Sol",0.41,53,1495,70.3,29.2,41.4,56.1,60.5,64,null,50.7],
+    ["GPT-6.2 Astra (low)","GPT-6.2 Astra",0.66,46,1039,68.6,28,32.7,51,51,61,null,47.7],
+    ["GPT-6.2 Sol (low)","GPT-6.2 Sol",0.18,41,1230,63.2,28.6,31.4,37.9,37.1,58,null,34.5]
   ],
   "model_sources": {
+    "GPT-6.2 Astra (max)": "https://artificialanalysis.ai/models/gpt-6-2-astra",
+    "GPT-6.2 Astra (xhigh)": "https://artificialanalysis.ai/models/gpt-6-2-astra",
+    "GPT-6.2 Astra (high)": "https://artificialanalysis.ai/models/gpt-6-2-astra",
+    "GPT-6.2 Sol (max)": "https://artificialanalysis.ai/models/gpt-6-2-sol",
+    "GPT-6.2 Astra (medium)": "https://artificialanalysis.ai/models/gpt-6-2-astra",
+    "GPT-6.2 Sol (xhigh)": "https://artificialanalysis.ai/models/gpt-6-2-sol",
+    "GPT-6.2 Sol (high)": "https://artificialanalysis.ai/models/gpt-6-2-sol",
+    "GPT-6.2 Sol (medium)": "https://artificialanalysis.ai/models/gpt-6-2-sol",
+    "GPT-6.2 Astra (low)": "https://artificialanalysis.ai/models/gpt-6-2-astra",
+    "GPT-6.2 Sol (low)": "https://artificialanalysis.ai/models/gpt-6-2-sol",
     "Gemini 4 Carbon (high)": "https://artificialanalysis.ai/models/gemini-4-carbon",
     "Claude Opus 5.5 (Max, Default Fallback)": "https://artificialanalysis.ai/models/claude-opus-5-5",
     "Gemini 4 Carbon (medium)": "https://artificialanalysis.ai/models/gemini-4-carbon-medium",
@@ -151,6 +171,16 @@ window.AI_BENCHMARK_DATA = {
     "GPT-6 High (ChatGPT reference)": "https://artificialanalysis.ai/models/gpt-6-sol-high"
   },
   "component_sources": {
+    "GPT-6.2 Astra (max)": "https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol",
+    "GPT-6.2 Astra (xhigh)": "https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol",
+    "GPT-6.2 Astra (high)": "https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol",
+    "GPT-6.2 Sol (max)": "https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol",
+    "GPT-6.2 Astra (medium)": "https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol",
+    "GPT-6.2 Sol (xhigh)": "https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol",
+    "GPT-6.2 Sol (high)": "https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol",
+    "GPT-6.2 Sol (medium)": "https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol",
+    "GPT-6.2 Astra (low)": "https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol",
+    "GPT-6.2 Sol (low)": "https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol",
     "Muse Wonder Full (max)": "https://artificialanalysis.ai/models/comparisons/claude-opus-5-5-vs-muse-wonder-full",
     "Gemini 4 Carbon (high)": "https://artificialanalysis.ai/models/comparisons/gemini-4-carbon-vs-gpt-6-1-sol-xhigh",
     "Claude Opus 5.5 (Max, Default Fallback)": "https://artificialanalysis.ai/models/comparisons/gemini-4-carbon-vs-claude-opus-5-5-medium",
@@ -221,6 +251,8 @@ window.AI_BENCHMARK_DATA = {
     "GPT-6 High (ChatGPT reference)": "https://artificialanalysis.ai/models/comparisons/gpt-6-1-sol-high-vs-gpt-6-sol-high"
   },
   "creators": {
+    "GPT-6.2 Astra": "OpenAI",
+    "GPT-6.2 Sol": "OpenAI",
     "Gemini 4 Carbon": "Google",
     "Claude Opus 5.5": "Anthropic",
     "GPT-6 Astra": "OpenAI",
@@ -245,7 +277,7 @@ window.AI_BENCHMARK_DATA = {
     "GPT-6 Sol": "OpenAI"
   },
   "review": {
-    "verified_figures": 506,
+    "verified_figures": 606,
     "retained_figures": 235
   },
   "model_status": {

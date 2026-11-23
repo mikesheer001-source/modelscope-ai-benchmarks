@@ -31,9 +31,13 @@ A standalone, mobile-friendly explorer for Artificial Analysis benchmark results
 If deployment has not started, open **Settings → Pages → Build and deployment → Source → GitHub Actions**.
 The workflow deploys automatically on push to `main`, or it can be run manually in **Actions → Publish ModelScope to GitHub Pages → Run workflow**.
 
+## November 24, 2026 ChatGPT selector update
+
+The three High-effort ChatGPT choices now link to their API benchmark references: GPT-6.2 Sol High, GPT-6 Sol High and GPT-5.6 Sol High. The current dataset adds only the missing GPT-5.6 Sol High reference (four verified component scores from [Artificial Analysis](https://artificialanalysis.ai/models/comparisons/gpt-6-sol-high-vs-gpt-5-6-sol-high)). Its current overall score and per-task cost are unreported; the October v4.3.2 historical point is separately marked and excluded from the current frontier. Other benchmark rows retain their November 18 snapshot. The API figures are not measurements of ChatGPT's High preset.
+
 ## November 18, 2026 snapshot
 
-The current view contains **81 configurations from 8 model developers**. GPT-6.2 Astra and GPT-6.2 Sol each add five reasoning effort levels. [Artificial Analysis publishes the Intelligence Index, cost per task, and eight component scores for each setting](https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol). The AA-Omniscience net-score cells for GPT-6.2 are blank pending direct verification.
+The November 18 view contained **81 configurations from 8 model developers**. GPT-6.2 Astra and GPT-6.2 Sol each add five reasoning effort levels. [Artificial Analysis publishes the Intelligence Index, cost per task, and eight component scores for each setting](https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol). The AA-Omniscience net-score cells for GPT-6.2 are blank pending direct verification.
 
 ## November 17, 2026 snapshot
 

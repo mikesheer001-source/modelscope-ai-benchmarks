@@ -130,9 +130,16 @@ const gpt6HighReference=!archive&&gpt6High&&archivedGpt6High
   &&(!Number.isFinite(gpt6High.cost)||!Number.isFinite(gpt6High.scores[0]))
   ? {...gpt6High,cost:archivedGpt6High[2],scores:[archivedGpt6High[3]]}
   : null;
-if(params.get('focus')==='gpt-6-high'&&gpt6High){
- state=normalize({...state,metric:'index',zoom:1,start:bounds()[0],selected:gpt6High.id,
-   hidden:archive?families.filter(f=>f!==gpt6High.family):state.hidden.filter(f=>f!==gpt6High.family)});
+const gpt56High=rows.find(r=>r.name===(archive?'GPT-5.6 Sol high':'GPT-5.6 Sol High (ChatGPT reference)'));
+const archivedGpt56High=window.AI_BENCHMARK_ARCHIVE?.models.find(r=>r[0]==='GPT-5.6 Sol high');
+const gpt56HighReference=!archive&&gpt56High&&archivedGpt56High
+  &&(!Number.isFinite(gpt56High.cost)||!Number.isFinite(gpt56High.scores[0]))
+  ? {...gpt56High,cost:archivedGpt56High[2],scores:[archivedGpt56High[3]]}
+  : null;
+const focusModel=params.get('focus')==='gpt-6-high'?gpt6High:params.get('focus')==='gpt-56-high'?gpt56High:params.get('focus')==='gpt-62-high'?rows.find(r=>r.name==='GPT-6.2 Sol (high)'):null;
+if(focusModel){
+ state=normalize({...state,metric:'index',zoom:1,start:bounds()[0],selected:focusModel.id,
+   hidden:archive?families.filter(f=>f!==focusModel.family):state.hidden.filter(f=>f!==focusModel.family)});
 }
 if(archive&&params.get('focus')==='sol')state=normalize({...state,metric:'index',hidden:families.filter(f=>f!=='GPT-6 Sol'),selected:rows.find(r=>r.name==='GPT-6 Sol medium')?.id??state.selected});
 function persist(){
@@ -220,10 +227,8 @@ return vals;
 let currentPointPositions=[];
 function drawChart(){
 const m=metricFor(),list=visible(),g=geometry();
-const reference=m.key==='index'&&gpt6HighReference&&!state.hidden.includes(gpt6HighReference.family)
-  ? gpt6HighReference
-  : null;
-const plotted=reference?[...list,reference]:list;
+const references=m.key==='index'?[gpt6HighReference,gpt56HighReference].filter(r=>r&&!state.hidden.includes(r.family)):[];
+const plotted=[...list,...references];
 const [yMin,yMax,yStep]=chartYDomain(plotted);
 const axisNote=document.getElementById('y-axis-note');
 if(axisNote)axisNote.textContent=state.yScale==='fit'?'Y-axis fits the lowest and highest enabled model scores.':yMin<0?'Negative scores included below zero so no models are clipped.':'Y-axis starts at zero.';
@@ -250,19 +255,20 @@ svgEl('polyline',{points:efficient.map(r=>xCoord(r.cost)+','+yCoord(score(r))).j
 }
 currentPointPositions=[];
 for(const r of plotted){
-const isReference=r===reference;
+const isReference=references.includes(r);
 const X=xCoord(r.cost),Y=yCoord(score(r));
 if(X<g.l-7||X>g.r+7)continue;
 currentPointPositions.push({id:r.id,x:X,y:Y});
 if(r.id===state.selected)svgEl('circle',{cx:X,cy:Y,r:12,fill:'none',stroke:'#fbbf24','stroke-width':2.5,'pointer-events':'none'},points);
 // The visible dot stays small, but a transparent hit area makes taps easier.
-const accessibleName=isReference?'GPT-6 High historical API reference, Index v4.3.2':r.name;
+const referenceLabel=r.id===gpt56High?.id?'GPT-5.6 Sol High':'GPT-6 High';
+const accessibleName=isReference?referenceLabel+' historical API reference, Index v4.3.2':r.name;
 svgEl('circle',{cx:X,cy:Y,r:16,fill:'transparent','data-id':r.id,role:'button','aria-label':accessibleName+', '+formatValue(score(r))+', '+formatCost(r.cost)+' per task',style:'cursor:pointer'},points);
 if(isReference){
  const radius=7;
  svgEl('polygon',{points:[X+','+(Y-radius),(X+radius)+','+Y,X+','+(Y+radius),(X-radius)+','+Y].join(' '),fill:'#102034',stroke:'#fbbf24','stroke-width':2.2,'pointer-events':'none'},points);
  const left=X>g.r-150;
- svgEl('text',{x:X+(left?-12:12),y:Y-8,'text-anchor':left?'end':'start',fill:'#fbbf24',stroke:'#102034','stroke-width':3,'paint-order':'stroke','font-size':11,'font-family':'system-ui','pointer-events':'none'},points,'GPT-6 High · v4.3.2');
+ svgEl('text',{x:X+(left?-12:12),y:Y-8,'text-anchor':left?'end':'start',fill:'#fbbf24',stroke:'#102034','stroke-width':3,'paint-order':'stroke','font-size':11,'font-family':'system-ui','pointer-events':'none'},points,referenceLabel+' · v4.3.2');
 }else{
  svgEl('circle',{cx:X,cy:Y,r:r.id===state.selected?7.4:6.3,fill:familyColor(r.family),stroke:'#102034','stroke-width':1.3,'pointer-events':'none'},points);
 }
@@ -278,8 +284,8 @@ const selectedStats=el('selected-chart-stats');
 if(selectedLabel&&selectedName&&selectedStats){
   selectedLabel.classList.toggle('has-selection',!!selected);
   selectedName.textContent=selected?selected.name:'Tap a model point to inspect it';
-  const historicalStats=selected&&selected.id===reference?.id;
-  const measurement=historicalStats?reference:selected;
+  const historicalStats=selected&&references.find(r=>r.id===selected.id);
+  const measurement=historicalStats||selected;
   selectedStats.textContent=measurement
     ? (historicalStats?'Historical Index v4.3.2':m.short)+': '+formatValue(score(measurement),m)+'  ·  '+formatTaskCost(measurement.cost)
     : '';
@@ -289,8 +295,8 @@ svgEl('text',{x:(g.l+g.r)/2,y:(g.t+g.b)/2-8,'text-anchor':'middle',fill:'#d6e9ff
 svgEl('text',{x:(g.l+g.r)/2,y:(g.t+g.b)/2+18,'text-anchor':'middle',fill:'#8ca8c4','font-size':12,'font-family':'system-ui'},plot,unhidden.length?'Try another benchmark, scale or family.':'Use Flip all or Show all to restore families.');
 }
 el('visible-count').innerHTML=unhidden.length+' <em>/ '+rows.length+'</em>';
-el('visible-label').textContent=list.length+' plottable in selected benchmark'+(reference?' + 1 historical reference':'');
-el('historical-chart-note').hidden=!reference;
+el('visible-label').textContent=list.length+' plottable in selected benchmark'+(references.length?' + '+references.length+' historical reference'+(references.length===1?'':'s'):'');
+el('historical-chart-note').hidden=!references.length;
 el('metric-context').textContent=m.name+' · '+m.desc;
 el('axis-units').textContent=m.unit+' · higher is better';
 el('score-column').textContent=m.key==='index'?'Intelligence v'+version:m.short;
@@ -369,15 +375,15 @@ const heading=document.createElement('h3');heading.textContent='All benchmark re
 const values=document.createElement('div');values.className='detail-values';
 metrics.forEach(mm=>{const label=document.createElement('span'),value=document.createElement('strong');label.textContent=mm.name;value.textContent=formatValue(score(r,mm),mm);values.append(label,value);});
 details.append(name,sub);
-if(r===gpt6High){
+if(r===gpt6High||r===gpt56High){
  const note=document.createElement('p');
  note.className='panel-intro';
- note.textContent='OpenAI lists GPT-6 Sol as the model behind ChatGPT High. These figures are from the GPT-6 Sol High API evaluation.';
+ note.textContent='These figures are from the '+(r===gpt56High?'GPT-5.6 Sol':'GPT-6 Sol')+' High API evaluation, not a separately measured ChatGPT preset.';
  details.append(note);
  if(!archive){
   const historicalLink=document.createElement('a');
   historicalLink.className='detail-link';
-  historicalLink.href='?suite=v4&focus=gpt-6-high#benchmark-chart';
+  historicalLink.href='?suite=v4&focus='+(r===gpt56High?'gpt-56-high':'gpt-6-high')+'#benchmark-chart';
   historicalLink.textContent='Open the v4.3.2 archive ↗';
   details.append(historicalLink);
  }

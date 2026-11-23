@@ -7,10 +7,10 @@
 <meta name="description" content="Compare current AI models on Artificial Analysis Intelligence Index v5.0.1, its component benchmarks, and cost per task.">
 <title>AI Benchmark Explorer — Intelligence vs Cost</title>
 <link rel="stylesheet" href="./style.css?v=20261106-columns">
-<script defer src="./data.js?v=20261118-gpt62"></script>
+<script defer src="./data.js?v=20261124-chat-high"></script>
 <script defer src="./archive-data.js?v=20261028"></script>
 <script defer src="./updates.js?v=20261106"></script>
-<script defer src="./app.js?v=20261117-gpt6-high-plot"></script>
+<script defer src="./app.js?v=20261124-chat-high"></script>
 </head>
 <body>
 <header class="site-header">
@@ -52,17 +52,17 @@
       <textarea id="removal-text" rows="4" readonly></textarea>
     </div>
   </details>
-  <section class="chatgpt-modes" aria-label="ChatGPT GPT-6 modes">
+  <section class="chatgpt-modes" aria-label="ChatGPT High effort model selector">
     <div class="modes-header">
-      <div><span class="section-kicker">CHATGPT / GPT-6</span><h2>Instant, Medium &amp; High</h2></div>
-      <a href="?suite=v4&amp;focus=sol#benchmark-chart" class="pill-primary">View archived GPT-6 Sol benchmarks →</a>
+      <div><span class="section-kicker">CHATGPT / MODEL SELECTOR</span><h2>Compare High thinking models</h2></div>
+      <a href="?suite=v4&amp;focus=sol#benchmark-chart" class="pill-primary">View historical benchmarks →</a>
     </div>
     <div class="mode-grid">
-      <div class="mode-card"><strong>Instant</strong><span>Fast everyday responses</span><small>GPT-6 Sol on eligible plans</small></div>
-      <div class="mode-card"><strong>Medium</strong><span>Standard thinking</span><small>Powered by GPT-6 Sol</small></div>
-      <div class="mode-card"><strong>GPT-6 High</strong><span>Extended thinking with GPT-6 Sol</span><a class="detail-link" href="./?focus=gpt-6-high#benchmark-chart">Show on chart ↗</a></div>
+      <div class="mode-card"><strong>GPT-6.2 High</strong><span>Newest ChatGPT model · Sol API reference</span><a class="detail-link" href="./?focus=gpt-62-high#benchmark-chart">Show on chart ↗</a></div>
+      <div class="mode-card"><strong>GPT-6 High</strong><span>Previous generation · Sol API reference</span><a class="detail-link" href="./?focus=gpt-6-high#benchmark-chart">Show on chart ↗</a></div>
+      <div class="mode-card"><strong>GPT-5.6 Sol High</strong><span>Legacy model · Sol API reference</span><a class="detail-link" href="./?focus=gpt-56-high#benchmark-chart">Show on chart ↗</a></div>
     </div>
-    <p class="modes-footnote">ChatGPT thinking presets and benchmarked API configurations use different settings. OpenAI lists GPT-5.6 Luna for Instant on Free and Go. <a href="https://help.openai.com/en/articles/20001354-gpt-6-and-other-models-in-chatgpt" target="_blank" rel="noopener noreferrer">OpenAI's model guide ↗</a></p>
+    <p class="modes-footnote">ChatGPT High is a product-level preset. Chart values are Artificial Analysis API High references, not separately measured ChatGPT scores or subscription costs. Historical v4.3.2 reference points are marked and excluded from the current frontier. <a href="https://help.openai.com/en/articles/6825453-chatgpt-release-notes" target="_blank" rel="noopener noreferrer">OpenAI release notes ↗</a></p>
   </section>
   <section class="dashboard" id="benchmark-chart" aria-label="Model comparison chart">
     <div class="section-title"><div><span class="section-kicker">01 / EXPLORE</span><h2>Benchmark performance</h2></div><button type="button" id="download-csv" class="subtle-button">↓ Export model CSV</button></div>
@@ -89,7 +89,7 @@
       <input type="range" id="zoom-range" min="1" max="60" value="1" step="1" aria-label="Zoom level">
       <div class="zoom-actions"><span>1× <span class="muted">Full range</span></span><div class="zoom-buttons"><button type="button" data-zoom="1">Reset</button><button type="button" data-zoom="5">5×</button><button type="button" data-zoom="15">15×</button></div><span>60× <span class="muted">Maximum</span></span></div>
     </div>
-    <div class="chart-foot"><div class="legend" id="legend"></div><div class="foot-note">The dashed line shows the best scores at successively higher costs among eligible models. <span id="cost-note"></span> <span id="historical-chart-note" hidden>Gold diamond shows GPT-6 High’s historical API benchmark (v4.3.2). It is excluded from the current frontier.</span></div></div>
+    <div class="chart-foot"><div class="legend" id="legend"></div><div class="foot-note">The dashed line shows the best scores at successively higher costs among eligible models. <span id="cost-note"></span> <span id="historical-chart-note" hidden>Gold diamonds show historical API benchmarks (v4.3.2), excluded from the current frontier.</span></div></div>
   </section>
   <section class="lower-grid">
     <div class="panel filters-panel">

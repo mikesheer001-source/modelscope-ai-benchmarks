@@ -85,9 +85,11 @@ window.AI_BENCHMARK_DATA = {
     ["GPT-6.2 Sol (high)","GPT-6.2 Sol",0.56,55,1541,69.9,28.8,40.2,58.6,67.6,61.5,null,58.3],
     ["GPT-6.2 Sol (medium)","GPT-6.2 Sol",0.41,53,1495,70.3,29.2,41.4,56.1,60.5,64,null,50.7],
     ["GPT-6.2 Astra (low)","GPT-6.2 Astra",0.66,46,1039,68.6,28,32.7,51,51,61,null,47.7],
-    ["GPT-6.2 Sol (low)","GPT-6.2 Sol",0.18,41,1230,63.2,28.6,31.4,37.9,37.1,58,null,34.5]
+    ["GPT-6.2 Sol (low)","GPT-6.2 Sol",0.18,41,1230,63.2,28.6,31.4,37.9,37.1,58,null,34.5],
+    ["GPT-5.6 Sol High (ChatGPT reference)","GPT-5.6 Sol",null,null,1368,55.3,27.8,null,20.7,null,null,null,null]
   ],
   "model_sources": {
+    "GPT-5.6 Sol High (ChatGPT reference)": "https://artificialanalysis.ai/models/gpt-5-6-sol-high",
     "GPT-6.2 Astra (max)": "https://artificialanalysis.ai/models/gpt-6-2-astra",
     "GPT-6.2 Astra (xhigh)": "https://artificialanalysis.ai/models/gpt-6-2-astra",
     "GPT-6.2 Astra (high)": "https://artificialanalysis.ai/models/gpt-6-2-astra",
@@ -171,6 +173,7 @@ window.AI_BENCHMARK_DATA = {
     "GPT-6 High (ChatGPT reference)": "https://artificialanalysis.ai/models/gpt-6-sol-high"
   },
   "component_sources": {
+    "GPT-5.6 Sol High (ChatGPT reference)": "https://artificialanalysis.ai/models/comparisons/gpt-6-sol-high-vs-gpt-5-6-sol-high",
     "GPT-6.2 Astra (max)": "https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol",
     "GPT-6.2 Astra (xhigh)": "https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol",
     "GPT-6.2 Astra (high)": "https://artificialanalysis.ai/es/models/comparisons/gpt-6-2-astra-vs-gpt-6-2-sol",
@@ -251,6 +254,7 @@ window.AI_BENCHMARK_DATA = {
     "GPT-6 High (ChatGPT reference)": "https://artificialanalysis.ai/models/comparisons/gpt-6-1-sol-high-vs-gpt-6-sol-high"
   },
   "creators": {
+    "GPT-5.6 Sol": "OpenAI",
     "GPT-6.2 Astra": "OpenAI",
     "GPT-6.2 Sol": "OpenAI",
     "Gemini 4 Carbon": "Google",
@@ -281,6 +285,8 @@ window.AI_BENCHMARK_DATA = {
     "retained_figures": 235
   },
   "model_status": {
-    "GPT-6 High (ChatGPT reference)": "GPT-6 Sol High API evaluation"
+    "GPT-6 High (ChatGPT reference)": "GPT-6 Sol High API evaluation",
+    "GPT-6.2 Sol (high)": "API High evaluation; reference for ChatGPT GPT-6.2 High, not a measured chat preset",
+    "GPT-5.6 Sol High (ChatGPT reference)": "GPT-5.6 Sol High API evaluation; current component scores only; October archive for index and cost"
   }
 };

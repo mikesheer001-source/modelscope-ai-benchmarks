@@ -443,10 +443,10 @@ function refreshCycleButtons(){
  const x=el('cycle-x-scale'),y=el('cycle-y-start'),front=el('cycle-frontier');
  const log=state.scale==='log',fit=state.yScale==='fit';
  // Buttons display the CURRENT setting, and pressing them changes it.
- x.replaceChildren(document.createTextNode(log?'Logarithmic ':'Linear '));
+ x.replaceChildren(document.createTextNode(log?'Log ':'Linear '));
  const xicon=document.createElement('span');xicon.setAttribute('aria-hidden','true');xicon.textContent='↔';x.append(xicon);
  x.setAttribute('aria-label','X-axis scale: '+(log?'logarithmic':'linear')+'. Tap to switch to '+(log?'linear':'logarithmic')+'.');
- y.replaceChildren(document.createTextNode(fit?'Lowest model ':'Zero '));
+ y.replaceChildren(document.createTextNode(fit?'Lowest ':'Zero '));
  const yicon=document.createElement('span');yicon.setAttribute('aria-hidden','true');yicon.textContent='↔';y.append(yicon);
  y.setAttribute('aria-label','Y-axis starts at '+(fit?'lowest visible model':'zero')+'. Tap to switch to '+(fit?'zero':'lowest visible model')+'.');
  front.replaceChildren(document.createTextNode(state.frontier?'On ':'Off '));
@@ -471,6 +471,12 @@ drawMetricButtons();drawChart();drawFamilies();drawDetail();drawTable();
 el('cycle-y-start').addEventListener('click',()=>update({yScale:state.yScale==='zero'?'fit':'zero'}));
 el('cycle-x-scale').addEventListener('click',()=>{const next=state.scale==='linear'?'log':'linear';update({scale:next,start:next==='log'?logMin:0,zoom:1});});
 el('cycle-frontier').addEventListener('click',()=>update({frontier:!state.frontier}));
+el('open-label-settings')?.addEventListener('click',()=>{
+ const button=el('open-label-settings'),panel=el('chart-label-settings');
+ if(!panel)return;
+ panel.hidden=!panel.hidden;
+ button.setAttribute('aria-expanded',String(!panel.hidden));
+});
 el('toggle-point-labels')?.addEventListener('click',()=>setPointLabelSettings({pointLabels:!state.pointLabels}));
 el('point-label-size')?.addEventListener('input',e=>setPointLabelSettings({labelSize:Number(e.target.value)}));
 el('zoom-range').addEventListener('input',e=>{const z=Number(e.target.value),[a,b]=bounds();update({zoom:z,start:clamp(state.start,a,b-(b-a)/z)});});

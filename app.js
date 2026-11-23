@@ -86,7 +86,7 @@ const metricFor=()=>metrics.find(m=>m.key===state.metric)||metrics[0];
 const score=(r,m=metricFor())=>r.scores[m.pos];
 const canPlot=r=>Number.isFinite(score(r))&&Number.isFinite(r.cost)&&(state.scale==='log'?r.cost>0:r.cost>=0);
 const settingsKey=archive?'modelscope-settings':'modelscope-settings-v5';
-let state={metric:'index',scale:'linear',yScale:'zero',zoom:1,start:0,hidden:[],frontier:true,selected:0};
+let state={metric:'index',scale:'linear',yScale:'zero',zoom:1,start:0,hidden:[],frontier:true,selected:0,pointLabels:true,labelSize:5};
 function bounds(st=state){return st.scale==='log'?[logMin,logMax]:[0,maxLinear];}
 function span(st=state){let [lo,hi]=bounds(st);return(hi-lo)/Math.max(1,st.zoom);}
 function normalize(st){
@@ -98,6 +98,8 @@ result.yScale=st.yScale==='fit'?'fit':'zero';
 if(!metrics.some(m=>m.key===result.metric))result.metric='index';
 if(!['linear','log'].includes(result.scale))result.scale='linear';
 result.frontier=!!result.frontier;
+result.pointLabels=result.pointLabels!==false;
+result.labelSize=clamp(Math.round(Number(result.labelSize)||5),3,18);
 return result;
 }
 function loadSettings(){
@@ -105,7 +107,7 @@ try{
  const url=new URL(location.href);
  const saved=JSON.parse(localStorage.getItem(settingsKey)||'null')||{};
  if(!archive&&saved.selectedName)saved.selected=rows.find(r=>r.name===saved.selectedName)?.id??state.selected;
- const keys=['m','x','z','a','h','f','p','y'];
+ const keys=['m','x','z','a','h','f','p','y','labels','font'];
  if(keys.some(k=>url.searchParams.has(k))){
    const x=url.searchParams.get('x')||saved.scale||'linear';
    const h=url.searchParams.get('h');
@@ -117,7 +119,9 @@ try{
       zoom:url.searchParams.has('z')?Number(url.searchParams.get('z')):1,
       start:url.searchParams.has('a')?Number(url.searchParams.get('a')):(x==='log'?logMin:0),
       hidden:f!==null?(f?f.split(','):[]):h===null?(saved.hidden||[]):h?h.split(',').map(i=>archiveFamilies[Number(i)]).filter(Boolean):[],
-      frontier:url.searchParams.has('p')?url.searchParams.get('p')!=='0':saved.frontier!==false
+      frontier:url.searchParams.has('p')?url.searchParams.get('p')!=='0':saved.frontier!==false,
+      pointLabels:url.searchParams.has('labels')?url.searchParams.get('labels')!=='0':saved.pointLabels!==false,
+      labelSize:url.searchParams.has('font')?Number(url.searchParams.get('font')):saved.labelSize??5
    });
  }
  return normalize({...state,...saved});
@@ -144,8 +148,8 @@ if(focusModel){
 if(archive&&params.get('focus')==='sol')state=normalize({...state,metric:'index',hidden:families.filter(f=>f!=='GPT-6 Sol'),selected:rows.find(r=>r.name==='GPT-6 Sol medium')?.id??state.selected});
 function persist(){
 try{
- localStorage.setItem(settingsKey,JSON.stringify({metric:state.metric,scale:state.scale,yScale:state.yScale,zoom:state.zoom,start:state.start,hidden:state.hidden,frontier:state.frontier,selected:state.selected,selectedName:rows[state.selected]?.name}));
- const url=new URL(location.href);url.searchParams.set('m',state.metric);url.searchParams.set('x',state.scale);url.searchParams.set('y',state.yScale);url.searchParams.set('z',String(state.zoom));url.searchParams.set('a',Number(state.start.toFixed(5)).toString());url.searchParams.delete('h');url.searchParams.delete('focus');url.searchParams.set('f',state.hidden.join(','));url.searchParams.set('p',state.frontier?'1':'0');history.replaceState(null,'',url);
+ localStorage.setItem(settingsKey,JSON.stringify({metric:state.metric,scale:state.scale,yScale:state.yScale,zoom:state.zoom,start:state.start,hidden:state.hidden,frontier:state.frontier,pointLabels:state.pointLabels,labelSize:state.labelSize,selected:state.selected,selectedName:rows[state.selected]?.name}));
+ const url=new URL(location.href);url.searchParams.set('m',state.metric);url.searchParams.set('x',state.scale);url.searchParams.set('y',state.yScale);url.searchParams.set('z',String(state.zoom));url.searchParams.set('a',Number(state.start.toFixed(5)).toString());url.searchParams.delete('h');url.searchParams.delete('focus');url.searchParams.set('f',state.hidden.join(','));url.searchParams.set('p',state.frontier?'1':'0');url.searchParams.set('labels',state.pointLabels?'1':'0');url.searchParams.set('font',String(state.labelSize));history.replaceState(null,'',url);
 }catch(e){}
 }
 function update(patch){state=normalize({...state,...patch});render();persist();}
@@ -254,6 +258,7 @@ if(state.frontier&&efficient.length>1){
 svgEl('polyline',{points:efficient.map(r=>xCoord(r.cost)+','+yCoord(score(r))).join(' '),fill:'none',stroke:'#34d399','stroke-width':2.5,'stroke-dasharray':'5 6','stroke-linecap':'round','pointer-events':'none'},points);
 }
 currentPointPositions=[];
+const pointLabels=[];
 for(const r of plotted){
 const isReference=references.includes(r);
 const X=xCoord(r.cost),Y=yCoord(score(r));
@@ -268,11 +273,30 @@ if(isReference){
  const radius=7;
  svgEl('polygon',{points:[X+','+(Y-radius),(X+radius)+','+Y,X+','+(Y+radius),(X-radius)+','+Y].join(' '),fill:'#102034',stroke:'#fbbf24','stroke-width':2.2,'pointer-events':'none'},points);
  const left=X>g.r-150;
- svgEl('text',{x:X+(left?-12:12),y:Y-8,'text-anchor':left?'end':'start',fill:'#fbbf24',stroke:'#102034','stroke-width':3,'paint-order':'stroke','font-size':11,'font-family':'system-ui','pointer-events':'none'},points,referenceLabel+' · v4.3.2');
+ if(!state.pointLabels)svgEl('text',{x:X+(left?-12:12),y:Y-8,'text-anchor':left?'end':'start',fill:'#fbbf24',stroke:'#102034','stroke-width':3,'paint-order':'stroke','font-size':11,'font-family':'system-ui','pointer-events':'none'},points,referenceLabel+' · v4.3.2');
 }else{
  svgEl('circle',{cx:X,cy:Y,r:r.id===state.selected?7.4:6.3,fill:familyColor(r.family),stroke:'#102034','stroke-width':1.3,'pointer-events':'none'},points);
 }
+if(state.pointLabels)pointLabels.push({r,X,Y,isReference,label:isReference?referenceLabel+' · v4.3.2':r.name});
 // No SVG <title>: mobile browsers can show native tooltips beside points.
+}
+// Labels render above all markers, but never intercept chart gestures.
+if(state.pointLabels){
+ const group=svgEl('g',{'class':'point-labels','pointer-events':'none','aria-hidden':'true','clip-path':'url(#points-clip)'});
+ const size=state.labelSize;
+ const occupied=[];
+ for(const {r,X,Y,isReference,label} of pointLabels){
+   const node=svgEl('text',{'class':'point-label','font-size':size,'font-family':'system-ui','font-weight':500,fill:isReference?'#fbbf24':'#e4edf9',stroke:'#0b1422','stroke-width':Math.max(.65,size*.18),'paint-order':'stroke','stroke-linejoin':'round'},group,label);
+   const width=node.getComputedTextLength()||label.length*size*.55;
+   const right=X+9,left=X-9-width;
+   const positions=[[right,Y-size*.45],[right,Y+size+4],[left,Y-size*.45],[left,Y+size+4]];
+   for(let i=1;i<=4;i++){positions.push([right,Y-size*.45-i*(size+1)],[left,Y+size+4+i*(size+1)]);}
+   const fits=([x,y])=>x>=g.l&&x+width<=g.r&&y-size>=g.t&&y+2<=g.b;
+   const free=([x,y])=>!occupied.some(b=>x<b.x+b.w+1&&x+width+1>b.x&&y-size<b.y+b.h+1&&y+2>b.y);
+   const pos=positions.find(p=>fits(p)&&free(p))||positions.find(fits)||[clamp(right,g.l,Math.max(g.l,g.r-width)),clamp(Y-size*.45,g.t+size,g.b-2)];
+   node.setAttribute('x',String(pos[0]));node.setAttribute('y',String(pos[1]));
+   occupied.push({x:pos[0],y:pos[1]-size,w:width,h:size+2});
+ }
 }
 // Selected point stays highlighted in the plot. Its label is anchored to the
 // chart footer instead of floating beside the point.
@@ -431,14 +455,24 @@ function refreshCycleButtons(){
  front.setAttribute('aria-pressed',String(state.frontier));
  front.classList.toggle('disabled-state',!state.frontier);
 }
+function refreshPointLabelSettings(){
+ const toggle=el('toggle-point-labels'),size=el('point-label-size'),readout=el('point-label-size-value');
+ if(toggle){toggle.textContent=state.pointLabels?'On':'Off';toggle.setAttribute('aria-pressed',String(state.pointLabels));toggle.classList.toggle('disabled-state',!state.pointLabels);}
+ if(size){size.value=state.labelSize;size.disabled=!state.pointLabels;}
+ if(readout)readout.textContent=state.labelSize+' px';
+}
+function setPointLabelSettings(patch){state=normalize({...state,...patch});refreshPointLabelSettings();drawChart();persist();}
 function render(){
 el('zoom-range').value=state.zoom;
+refreshPointLabelSettings();
 refreshCycleButtons();
 drawMetricButtons();drawChart();drawFamilies();drawDetail();drawTable();
 }
 el('cycle-y-start').addEventListener('click',()=>update({yScale:state.yScale==='zero'?'fit':'zero'}));
 el('cycle-x-scale').addEventListener('click',()=>{const next=state.scale==='linear'?'log':'linear';update({scale:next,start:next==='log'?logMin:0,zoom:1});});
 el('cycle-frontier').addEventListener('click',()=>update({frontier:!state.frontier}));
+el('toggle-point-labels')?.addEventListener('click',()=>setPointLabelSettings({pointLabels:!state.pointLabels}));
+el('point-label-size')?.addEventListener('input',e=>setPointLabelSettings({labelSize:Number(e.target.value)}));
 el('zoom-range').addEventListener('input',e=>{const z=Number(e.target.value),[a,b]=bounds();update({zoom:z,start:clamp(state.start,a,b-(b-a)/z)});});
 document.querySelectorAll('[data-zoom]').forEach(b=>b.addEventListener('click',()=>update({zoom:Number(b.dataset.zoom),start:bounds()[0]})));
 el('flip-all').addEventListener('click',()=>update({hidden:families.filter(f=>!state.hidden.includes(f))}));

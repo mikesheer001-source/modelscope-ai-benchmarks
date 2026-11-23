@@ -102,3 +102,15 @@
 .family-column .family-button span:nth-child(2){flex:1;min-width:0;overflow-wrap:anywhere}
 .family-column .family-dot,.family-column .family-x{flex:none}
 @container (max-width:440px){.family-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Point-label preferences */
+.chart-label-settings{margin:0 0 12px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--panel2)}
+.chart-label-settings summary{cursor:pointer;color:#b9cbe2;font-size:12px;font-weight:650}
+.chart-label-controls{display:grid;grid-template-columns:minmax(100px,1fr) minmax(145px,2fr);gap:16px;align-items:center;margin-top:12px}
+.chart-label-controls .toolbar-group,.label-font-setting{display:flex;flex-direction:column;gap:8px;min-width:0}
+.label-font-setting label{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.label-font-setting output{color:var(--text);font-variant-numeric:tabular-nums;font-size:12px}
+.label-font-setting input{width:100%;margin:0;accent-color:var(--blue);min-height:32px}
+.label-font-setting input:disabled{opacity:.45}
+.point-labels,.point-label{pointer-events:none;user-select:none}
+@media(max-width:390px){.chart-label-controls{gap:10px;grid-template-columns:1fr 1.4fr}}

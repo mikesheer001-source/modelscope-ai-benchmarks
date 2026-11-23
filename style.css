@@ -114,3 +114,21 @@
 .label-font-setting input:disabled{opacity:.45}
 .point-labels,.point-label{pointer-events:none;user-select:none}
 @media(max-width:390px){.chart-label-controls{gap:10px;grid-template-columns:1fr 1.4fr}}
+
+/* Four compact chart controls in one row, including mobile. */
+.chart-toolbar{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:12px 0 9px;align-items:end}
+.chart-toolbar>.toolbar-group,.chart-toolbar>.toolbar-group:last-of-type{grid-column:auto;flex-wrap:nowrap;gap:4px}
+.chart-toolbar>.toolbar-group>.control-label{font-size:9px;letter-spacing:.06em;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-toolbar>.toolbar-group>.cycle-button{min-height:34px;height:34px;padding:5px 6px;gap:2px;font-size:11px;line-height:1.1;border-radius:7px;white-space:nowrap;justify-content:center}
+.chart-toolbar>.toolbar-group>.cycle-button span{font-size:12px;flex:none}
+.chart-toolbar>.toolbar-group>.cycle-button[aria-expanded="true"]{border-color:#75b8f8;background:#24496e}
+.chart-toolbar>.toolbar-unit[hidden],.chart-label-settings[hidden]{display:none!important}
+.chart-label-settings{margin:0 0 9px;padding:8px 10px}
+.chart-label-controls{margin-top:0}
+@media(max-width:420px){
+ .chart-toolbar{gap:4px}
+ .chart-toolbar>.toolbar-group>.control-label{font-size:8px;letter-spacing:.04em}
+ .chart-toolbar>.toolbar-group>.cycle-button{padding:4px 3px;font-size:10px}
+ .chart-toolbar>.toolbar-group>.cycle-button span{font-size:10px}
+}
+@media(max-width:340px){.chart-toolbar>.toolbar-group>.cycle-button span{display:none}}

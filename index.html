@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#0b1220">
 <meta name="description" content="Compare current AI models on Artificial Analysis Intelligence Index v5.0.1, its component benchmarks, and cost per task.">
 <title>AI Benchmark Explorer — Intelligence vs Cost</title>
-<link rel="stylesheet" href="./style.css?v=20261124-point-labels">
+<link rel="stylesheet" href="./style.css?v=20261124-compact-controls">
 <script defer src="./data.js?v=20261124-chat-high"></script>
 <script defer src="./archive-data.js?v=20261028"></script>
 <script defer src="./updates.js?v=20261106"></script>
-<script defer src="./app.js?v=20261124-point-labels"></script>
+<script defer src="./app.js?v=20261124-compact-controls"></script>
 </head>
 <body>
 <header class="site-header">
@@ -69,18 +69,18 @@
     <div class="metrics-header"><span class="control-label">Y-AXIS · BENCHMARK</span><span id="metric-context">Higher is better</span></div>
     <div class="metric-buttons" id="metric-buttons" role="group" aria-label="Select benchmark"></div>
     <div class="chart-toolbar">
-      <div class="toolbar-group"><span class="control-label">X-AXIS SCALE</span><button id="cycle-x-scale" type="button" class="cycle-button" aria-label="X-axis scale: linear. Tap to switch to logarithmic." title="Tap to switch between linear and logarithmic scale">Linear <span aria-hidden="true">↔</span></button></div>
-      <div class="toolbar-group"><span class="control-label">Y-AXIS START</span><button id="cycle-y-start" type="button" class="cycle-button" aria-label="Y-axis starts at zero. Tap to switch to lowest model." title="Tap to switch Y-axis baseline">Zero <span aria-hidden="true">↔</span></button></div>
-      <div class="toolbar-group"><span class="control-label">PARETO FRONTIER</span><button id="cycle-frontier" type="button" class="cycle-button" aria-pressed="true" aria-label="Pareto frontier on. Tap to turn off.">On <span aria-hidden="true">↔</span></button></div>
-      <span class="toolbar-unit" id="axis-units">Index score</span>
+      <div class="toolbar-group"><span class="control-label">X-AXIS</span><button id="cycle-x-scale" type="button" class="cycle-button" aria-label="X-axis scale: linear. Tap to switch to logarithmic." title="Tap to switch between linear and logarithmic scale">Linear <span aria-hidden="true">↔</span></button></div>
+      <div class="toolbar-group"><span class="control-label">Y-AXIS</span><button id="cycle-y-start" type="button" class="cycle-button" aria-label="Y-axis starts at zero. Tap to switch to lowest model." title="Tap to switch Y-axis baseline">Zero <span aria-hidden="true">↔</span></button></div>
+      <div class="toolbar-group"><span class="control-label">FRONTIER</span><button id="cycle-frontier" type="button" class="cycle-button" aria-pressed="true" aria-label="Pareto frontier on. Tap to turn off.">On <span aria-hidden="true">↔</span></button></div>
+      <div class="toolbar-group"><span class="control-label">LABELS</span><button id="open-label-settings" type="button" class="cycle-button" aria-expanded="false" aria-controls="chart-label-settings" aria-label="Point label settings">Settings <span aria-hidden="true">⚙</span></button></div>
+      <span id="axis-units" class="toolbar-unit" hidden>Index score</span>
     </div>
-    <details class="chart-label-settings">
-      <summary>Chart settings · Point labels</summary>
+    <div class="chart-label-settings" id="chart-label-settings" hidden>
       <div class="chart-label-controls">
         <div class="toolbar-group"><span class="control-label">POINT LABELS</span><button id="toggle-point-labels" type="button" class="cycle-button" aria-label="Show model names beside chart points" aria-pressed="true">On</button></div>
         <div class="label-font-setting"><label class="control-label" for="point-label-size">LABEL FONT SIZE <output id="point-label-size-value" for="point-label-size">5 px</output></label><input id="point-label-size" type="range" min="3" max="18" step="1" value="5" aria-label="Point label font size in pixels"></div>
       </div>
-    </details>
+    </div>
     <div class="plot-wrap">
       <svg id="plot" role="img" aria-label="Interactive scatter chart comparing model cost and intelligence. Tap points for model details, drag to pan, pinch to zoom." viewBox="0 0 800 475"></svg>
       <div class="selected-chart-label" id="selected-chart-label" role="status" aria-live="polite" aria-atomic="true">

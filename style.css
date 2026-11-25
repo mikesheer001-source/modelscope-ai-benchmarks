@@ -132,3 +132,33 @@
  .chart-toolbar>.toolbar-group>.cycle-button span{font-size:10px}
 }
 @media(max-width:340px){.chart-toolbar>.toolbar-group>.cycle-button span{display:none}}
+
+/* In-page floating chart. The same SVG and interactions remain live in either mode. */
+.chart-title-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:6px}
+.chart-pip-button{display:inline-flex;align-items:center;gap:6px}
+.chart-pip-button[aria-pressed="true"]{background:#214b72;border-color:#68b5ff;color:#eff8ff}
+.chart-float-header[hidden],.chart-float-placeholder[hidden]{display:none!important}
+.chart-float-placeholder{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;align-content:center;gap:10px;padding:12px;border:1px dashed #354b65;border-radius:12px;color:#90a9c5;background:#101b2a;font-size:12px;text-align:center}
+.plot-wrap.is-floating{position:fixed;z-index:1000;right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom));width:min(620px,calc(100vw - 24px));max-height:calc(100dvh - 16px);background:#101b2a;box-shadow:0 15px 55px #000a;border:1px solid #456486;border-radius:13px;isolation:isolate}
+.plot-wrap.is-floating.float-top{top:max(8px,env(safe-area-inset-top));bottom:auto}
+.chart-float-header{display:flex;align-items:center;gap:6px;padding:5px 8px;background:#192b42;border-bottom:1px solid #354c67}
+.chart-float-grip{display:flex;align-items:center;gap:6px;min-width:0;flex:1;cursor:grab;touch-action:none;user-select:none;font-size:11px;font-weight:700;color:#c4d8ef}
+.chart-float-grip:active{cursor:grabbing}
+.chart-float-grip svg{flex-shrink:0}
+.chart-float-grip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-float-header button{min-height:32px;padding:5px 9px;font-size:11px;flex-shrink:0}
+.plot-wrap.is-floating #plot{height:clamp(125px,38dvh,350px)}
+.plot-wrap.is-floating .plot-instructions,.plot-wrap.is-floating .y-axis-note{display:none}
+.plot-wrap.is-floating .selected-chart-label{min-height:0;gap:3px 8px;padding:6px 8px;border-bottom:0}
+.plot-wrap.is-floating .selected-chart-kicker{display:none}
+.plot-wrap.is-floating #selected-chart-name{font-size:11px}
+.plot-wrap.is-floating .selected-chart-stats{font-size:10px;width:auto}
+@media(max-width:600px){
+ .chart-title-actions{gap:5px}
+ .chart-pip-button{padding:8px;min-height:36px}
+ .chart-pip-button span{display:none}
+ .chart-title-actions #download-csv{font-size:10px;padding:8px}
+ .plot-wrap.is-floating{width:calc(100vw - 16px);right:max(8px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom))}
+ .plot-wrap.is-floating #plot{height:clamp(125px,34dvh,290px)}
+}
+@media(max-height:450px){.plot-wrap.is-floating{width:min(480px,calc(100vw - 16px))}.plot-wrap.is-floating #plot{height:clamp(125px,39dvh,180px)}}

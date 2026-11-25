@@ -171,7 +171,7 @@ const ns='http://www.w3.org/2000/svg';
 function svgEl(tag,attrs={},parent=plot,text){
 const elem=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))elem.setAttribute(k,String(v));if(text!==undefined)elem.textContent=String(text);parent.appendChild(elem);return elem;
 }
-function geometry(){const rect=plot.getBoundingClientRect(),w=Math.max(310,rect.width||800),h=Math.max(340,rect.height||465);return {w,h,l:w<500?53:66,r:w-18,t:29,b:h-76};}
+function geometry(){const rect=plot.getBoundingClientRect(),floating=plot.parentElement.classList.contains('is-floating'),w=Math.max(floating?220:310,rect.width||800),h=Math.max(floating?125:340,rect.height||465);return {w,h,l:w<500?(floating?43:53):66,r:w-18,t:29,b:h-(floating?55:76)};}
 function niceYStep(raw){
  const magnitude=10**Math.floor(Math.log10(Math.max(raw,0.000001)));
  const scale=raw/magnitude;
@@ -325,6 +325,7 @@ svgEl('text',{x:(g.l+g.r)/2,y:(g.t+g.b)/2+18,'text-anchor':'middle',fill:'#8ca8c
 el('visible-count').innerHTML=unhidden.length+' <em>/ '+rows.length+'</em>';
 el('visible-label').textContent=list.length+' plottable in selected benchmark'+(references.length?' + '+references.length+' historical reference'+(references.length===1?'':'s'):'');
 el('historical-chart-note').hidden=!references.length;
+el('chart-float-title').textContent=m.short+' · Cost / task';
 el('metric-context').textContent=m.name+' · '+m.desc+(new Set(list.map(r=>r.version)).size>1?' · Mixed suite versions; frontier hidden.':'');
 el('axis-units').textContent=m.unit+' · higher is better';
 el('score-column').textContent=m.key==='index'?'Intelligence '+versionLabel:m.short;
@@ -437,7 +438,7 @@ const td=document.createElement('td');td.textContent=text;
 if(text==='Frontier')td.className='status-yes';if(!canPlot(r)&&text===status)td.className='status-no';
 tr.appendChild(td);
 }
-const select=()=>{state.selected=r.id;render();el('benchmark-chart').scrollIntoView({behavior:'smooth',block:'start'});persist();};
+const select=()=>{state.selected=r.id;render();if(!el('chart-float-panel').classList.contains('is-floating'))el('benchmark-chart').scrollIntoView({behavior:'smooth',block:'start'});persist();};
 tr.addEventListener('click',select);
 const modelButton=document.createElement('button');modelButton.type='button';modelButton.className='table-model';modelButton.textContent=displayName(r);
 tr.firstChild.replaceChildren(modelButton);
@@ -555,6 +556,53 @@ const [a,b]=bounds(),w=(b-a)/z;update({zoom:z,start:clamp(anchor-ratio*w,a,b-w)}
 },{passive:false});
 // Pointer selection is handled by the chart; keyboard users can select
 // models from the accessible data table below it.
+// In-page picture-in-picture: move the existing chart, not a duplicate.
+function setupFloatingChart(){
+ const panel=el('chart-float-panel'),toggle=el('chart-pip'),header=el('chart-float-header'),placeholder=el('chart-float-placeholder'),grip=el('chart-float-grip'),move=el('chart-float-move'),dock=el('chart-dock'),inline=el('chart-dock-inline');
+ if(!panel||!toggle||!header||!placeholder||!grip||!move||!dock||!inline)return;
+ let floating=false,drag=null,corner='bottom';
+ const margin=8;
+ function resetPosition(){panel.style.left='';panel.style.top='';panel.style.right='';panel.style.bottom='';panel.classList.toggle('float-top',corner==='top');}
+ function place(x,y){
+   const r=panel.getBoundingClientRect();
+   panel.style.right='auto';panel.style.bottom='auto';
+   panel.style.left=clamp(x,margin,Math.max(margin,document.documentElement.clientWidth-r.width-margin))+'px';
+   panel.style.top=clamp(y,margin,Math.max(margin,window.innerHeight-r.height-margin))+'px';
+ }
+ function setFloating(next){
+   if(floating===next)return;
+   floating=next;drag=null;
+   if(next){
+     corner='bottom';resetPosition();
+     // Keep the document's scroll position stable when the original plot leaves normal flow.
+     const originalHeight=panel.getBoundingClientRect().height;
+     placeholder.style.minHeight=originalHeight+'px';
+     placeholder.hidden=false;header.hidden=false;panel.classList.add('is-floating');
+   }else{
+     panel.classList.remove('is-floating','float-top');
+     resetPosition();header.hidden=true;placeholder.hidden=true;placeholder.style.minHeight='';
+   }
+   toggle.setAttribute('aria-pressed',String(next));
+   toggle.querySelector('span').textContent=next?'Dock chart':'Float chart';
+   toggle.title=next?'Return chart to its original position':'Float chart while scrolling';
+   requestAnimationFrame(drawChart);
+ }
+ toggle.addEventListener('click',()=>setFloating(!floating));
+ dock.addEventListener('click',()=>setFloating(false));
+ inline.addEventListener('click',()=>setFloating(false));
+ move.addEventListener('click',()=>{if(!floating)return;const r=panel.getBoundingClientRect();corner=r.top+r.height/2<window.innerHeight/2?'bottom':'top';resetPosition();});
+ grip.addEventListener('pointerdown',e=>{
+   if(!floating||e.button!==0||drag)return;
+   const r=panel.getBoundingClientRect();drag={id:e.pointerId,dx:e.clientX-r.left,dy:e.clientY-r.top};
+   grip.setPointerCapture(e.pointerId);e.preventDefault();
+ });
+ grip.addEventListener('pointermove',e=>{if(drag?.id===e.pointerId)place(e.clientX-drag.dx,e.clientY-drag.dy);});
+ const endDrag=e=>{if(drag?.id===e.pointerId)drag=null;};
+ grip.addEventListener('pointerup',endDrag);grip.addEventListener('pointercancel',endDrag);grip.addEventListener('lostpointercapture',endDrag);
+ window.addEventListener('resize',()=>{if(floating&&panel.style.left){const r=panel.getBoundingClientRect();place(r.left,r.top);}if(floating)requestAnimationFrame(drawChart);});
+ document.addEventListener('keydown',e=>{if(floating&&e.key==='Escape'&&!e.defaultPrevented)setFloating(false);});
+}
+setupFloatingChart();
 let resizeTimer=null;
 if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(drawChart,50);}).observe(plot);
 drawLegend();render();persist();

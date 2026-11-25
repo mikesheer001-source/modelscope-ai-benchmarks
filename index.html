@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#0b1220">
 <meta name="description" content="Compare current AI models on Artificial Analysis Intelligence Index v5.0.1, its component benchmarks, and cost per task.">
 <title>AI Benchmark Explorer — Intelligence vs Cost</title>
-<link rel="stylesheet" href="./style.css?v=20261125-chart-pip2">
+<link rel="stylesheet" href="./style.css?v=20261125-chart-pip3">
 <script defer src="./data.js?v=20261125-gemini"></script>
 <script defer src="./archive-data.js?v=20261028"></script>
 <script defer src="./updates.js?v=20261106"></script>
-<script defer src="./app.js?v=20261125-chart-pip2"></script>
+<script defer src="./app.js?v=20261125-chart-pip3"></script>
 <link rel="icon" type="image/png" sizes="180x180" href="./apple-touch-icon.png?v=1">
 <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=1">
 </head>
@@ -83,9 +83,9 @@
         <div class="label-font-setting"><label class="control-label" for="point-label-size">LABEL FONT SIZE <output id="point-label-size-value" for="point-label-size">5 px</output></label><input id="point-label-size" type="range" min="3" max="18" step="1" value="5" aria-label="Point label font size in pixels"></div>
       </div>
     </div>
-    <div id="chart-float-placeholder" class="chart-float-placeholder" hidden><span>Chart is floating. Use the floating window to pan, zoom and select models.</span><button type="button" id="chart-dock-inline" class="subtle-button">Dock chart</button></div>
+    <div id="chart-float-placeholder" class="chart-float-placeholder" hidden></div>
     <div class="plot-wrap" id="chart-float-panel">
-      <div class="chart-float-header" id="chart-float-header" hidden><div id="chart-float-grip" class="chart-float-grip" title="Drag to move the floating chart"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/></svg><span id="chart-float-title">Benchmark chart</span></div><button id="chart-float-move" type="button" class="subtle-button" title="Switch between upper and lower corners" aria-label="Move floating chart to opposite corner">↕</button><button id="chart-dock" type="button" class="subtle-button" title="Return chart to the page" aria-label="Dock chart">Dock <span aria-hidden="true">×</span></button></div>
+      <div class="chart-float-header" id="chart-float-header" hidden><button id="chart-float-grip" type="button" title="Drag to move; tap to switch corners" aria-label="Move floating chart">⠿</button><button id="chart-dock" type="button" title="Dock chart" aria-label="Dock chart">×</button></div>
       <svg id="plot" role="img" aria-label="Interactive scatter chart comparing model cost and intelligence. Tap points for model details, drag to pan, pinch to zoom." viewBox="0 0 800 475"></svg>
       <div class="selected-chart-label" id="selected-chart-label" role="status" aria-live="polite" aria-atomic="true">
         <span class="selected-chart-kicker">SELECTED MODEL</span>

@@ -325,7 +325,6 @@ svgEl('text',{x:(g.l+g.r)/2,y:(g.t+g.b)/2+18,'text-anchor':'middle',fill:'#8ca8c
 el('visible-count').innerHTML=unhidden.length+' <em>/ '+rows.length+'</em>';
 el('visible-label').textContent=list.length+' plottable in selected benchmark'+(references.length?' + '+references.length+' historical reference'+(references.length===1?'':'s'):'');
 el('historical-chart-note').hidden=!references.length;
-el('chart-float-title').textContent=m.short+' · Cost / task';
 el('metric-context').textContent=m.name+' · '+m.desc+(new Set(list.map(r=>r.version)).size>1?' · Mixed suite versions; frontier hidden.':'');
 el('axis-units').textContent=m.unit+' · higher is better';
 el('score-column').textContent=m.key==='index'?'Intelligence '+versionLabel:m.short;
@@ -558,9 +557,9 @@ const [a,b]=bounds(),w=(b-a)/z;update({zoom:z,start:clamp(anchor-ratio*w,a,b-w)}
 // models from the accessible data table below it.
 // In-page picture-in-picture: move the existing chart, not a duplicate.
 function setupFloatingChart(){
- const panel=el('chart-float-panel'),toggle=el('chart-pip'),header=el('chart-float-header'),placeholder=el('chart-float-placeholder'),grip=el('chart-float-grip'),move=el('chart-float-move'),dock=el('chart-dock'),inline=el('chart-dock-inline');
- if(!panel||!toggle||!header||!placeholder||!grip||!move||!dock||!inline)return;
- let floating=false,drag=null,corner='bottom';
+ const panel=el('chart-float-panel'),toggle=el('chart-pip'),header=el('chart-float-header'),placeholder=el('chart-float-placeholder'),grip=el('chart-float-grip'),dock=el('chart-dock');
+ if(!panel||!toggle||!header||!placeholder||!grip||!dock)return;
+ let floating=false,drag=null,corner='bottom',moved=false;
  const margin=8;
  function resetPosition(){panel.style.left='';panel.style.top='';panel.style.right='';panel.style.bottom='';panel.classList.toggle('float-top',corner==='top');}
  function place(x,y){
@@ -575,8 +574,7 @@ function setupFloatingChart(){
    if(next){
      corner='bottom';resetPosition();
      // Keep the document's scroll position stable when the original plot leaves normal flow.
-     const originalHeight=panel.getBoundingClientRect().height;
-     placeholder.style.minHeight=originalHeight+'px';
+     placeholder.style.minHeight='0px';
      placeholder.hidden=false;header.hidden=false;panel.classList.add('is-floating');
    }else{
      panel.classList.remove('is-floating','float-top');
@@ -590,14 +588,13 @@ function setupFloatingChart(){
  }
  toggle.addEventListener('click',()=>setFloating(!floating));
  dock.addEventListener('click',()=>setFloating(false));
- inline.addEventListener('click',()=>setFloating(false));
- move.addEventListener('click',()=>{if(!floating)return;const r=panel.getBoundingClientRect();corner=r.top+r.height/2<window.innerHeight/2?'bottom':'top';resetPosition();});
+ grip.addEventListener('click',()=>{if(!floating||moved){moved=false;return;}const r=panel.getBoundingClientRect();corner=r.top+r.height/2<window.innerHeight/2?'bottom':'top';resetPosition();});
  grip.addEventListener('pointerdown',e=>{
    if(!floating||e.button!==0||drag)return;
-   const r=panel.getBoundingClientRect();drag={id:e.pointerId,dx:e.clientX-r.left,dy:e.clientY-r.top};
-   grip.setPointerCapture(e.pointerId);e.preventDefault();
+   const r=panel.getBoundingClientRect();moved=false;drag={id:e.pointerId,dx:e.clientX-r.left,dy:e.clientY-r.top,x:e.clientX,y:e.clientY};
+   grip.setPointerCapture(e.pointerId);
  });
- grip.addEventListener('pointermove',e=>{if(drag?.id===e.pointerId)place(e.clientX-drag.dx,e.clientY-drag.dy);});
+ grip.addEventListener('pointermove',e=>{if(drag?.id===e.pointerId){if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>5)moved=true;if(moved)place(e.clientX-drag.dx,e.clientY-drag.dy);}});
  const endDrag=e=>{if(drag?.id===e.pointerId)drag=null;};
  grip.addEventListener('pointerup',endDrag);grip.addEventListener('pointercancel',endDrag);grip.addEventListener('lostpointercapture',endDrag);
  window.addEventListener('resize',()=>{if(floating&&panel.style.left){const r=panel.getBoundingClientRect();place(r.left,r.top);}if(floating)requestAnimationFrame(drawChart);});

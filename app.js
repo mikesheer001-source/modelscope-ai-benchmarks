@@ -9,13 +9,14 @@ const overlay=window.AI_DAILY_UPDATES;
 const live=!archive&&overlay?.index_version===version&&overlay?.snapshot_as_of===payload.as_of?overlay:{};
 const liveModels=live.models&&typeof live.models==='object'?live.models:{};
 const leaderboard='https://artificialanalysis.ai/leaderboards/models';
-const indexName='Artificial Analysis Intelligence Index v'+version;
+const mixed=!archive&&!!payload.gemini_review_as_of;
+const indexName='Artificial Analysis Intelligence Index '+(mixed?'(v5.0.1 / v5.0.2)':'v'+version);
 const el=id=>document.getElementById(id);
 let appliedUpdates=0;
 const rows=payload.models.map((r,i)=>{
-const model={id:i,name:r[0],family:r[1],cost:r[2],scores:r.slice(3)};
+const model={id:i,name:r[0],family:r[1],cost:r[2],scores:r.slice(3),version:payload.model_versions?.[r[0]]||version,date:payload.model_dates?.[r[0]]||payload.as_of};
 const item=Object.hasOwn(liveModels,model.name)?liveModels[model.name]:null;
-if(item&&typeof item==='object'){
+if(item&&typeof item==='object'&&model.version===version){
 let changed=false;
 if(Number.isFinite(item.index)&&item.index>=0&&item.index<=100){model.scores[0]=item.index;changed=true;}
 if(Number.isFinite(item.cost)&&item.cost>=0&&item.cost<=1000){model.cost=item.cost;changed=true;}
@@ -24,15 +25,17 @@ if(changed)appliedUpdates++;
 return model;
 });
 const liveUpdated=appliedUpdates>0&&typeof live.updated_at==='string';
-el('data-status').textContent=(archive?'Historical':'Published')+' snapshot · '+payload.as_of+' · Intelligence Index v'+version
+const versionLabel=mixed?'v5.0.1 / v5.0.2':'v'+version;
+const displayName=r=>r.name+(mixed&&r.version!==version?' · v'+r.version:'');
+el('data-status').textContent=(archive?'Historical':'Published')+' snapshot · '+payload.as_of+' · Intelligence Index '+versionLabel+(mixed?' · Gemini refreshed '+payload.gemini_review_as_of+'; other families retain base snapshot.':'')
  +(liveUpdated?' · Index scores and costs refreshed '+live.updated_at.slice(0,10)+' UTC for '+appliedUpdates+' models.':'.');
-el('snapshot-heading').textContent=rows.length+' configurations · Index v'+version+' · '+payload.as_of;
+el('snapshot-heading').textContent=rows.length+' configurations · Index '+versionLabel+' · '+(mixed?'Gemini '+payload.gemini_review_as_of+' / base '+payload.as_of:payload.as_of);
 el('suite-status').textContent=archive?'October archive':'Benchmark snapshot';
 el('methodology-current').hidden=archive;
 el('methodology-archive').hidden=!archive;
 if(!archive)el('benchmark-coverage').textContent=rows.filter(r=>r.scores.slice(1).every(Number.isFinite)).length
  +' of '+rows.length+' configurations have all nine component scores in this snapshot.'
- +(payload.review?' '+payload.review.verified_figures+' figures were checked against current source tables. '+payload.review.retained_figures+' figures carry over from the earlier snapshot.':'');
+ +(mixed?' Gemini composite scores and task costs use v5.0.2; the remaining families use v5.0.1. Cross-version frontiers are hidden. New component scores appear only when verified; older component values may be retained, and Terminal-Bench 4.0 is not replaced by 4.1.':(payload.review?' '+payload.review.verified_figures+' figures were checked against current source tables. '+payload.review.retained_figures+' figures carry over from the earlier snapshot.':''));
 const suiteLink=el('switch-suite');
 suiteLink.href=archive?'./':'?suite=v4';
 suiteLink.textContent=archive?'Return to current benchmarks ↗':'View October archive ↗';
@@ -68,7 +71,7 @@ const colors={
 'GPT-6 Luna':'#96a8bb','GPT-6.1 Sol':'#60a5fa','GPT-6 Sol':'#fb923c','GPT-5.6 Sol':'#c084fc',
 'GPT-6 Astra':'#2dd4bf','Claude Opus 5.5':'#e8a078','Gemini 3.8 Flash':'#b1d65b',
 'Gemini 4 Argon':'#4ade80','GLM-5.3':'#38bdf8','Muse Spark':'#f472b6','Kimi K3':'#a78bfa','Grok 4.6':'#c4b5fd','Qwen':'#facc15','GPT-6.1 Terra':'#93c5fd',
-'Gemini 4 Carbon':'#23c483','Claude Sonnet 5.5':'#fda4af','Claude Haiku 5.5':'#fdba74','Claude Fable 5.1':'#f87171',
+'Gemini 4 Neon':'#06b6d4','Gemini 4 Hydrogen':'#a3e635','Gemini 4 Carbon':'#23c483','Claude Sonnet 5.5':'#fda4af','Claude Haiku 5.5':'#fdba74','Claude Fable 5.1':'#f87171',
 'Grok 4.7':'#ddd6fe','Muse Wonder':'#e879f9','DeepSeek':'#648dff','Kimi K3.1':'#d8b4fe'};
 const familyColor=f=>colors[f]||'hsl('+Math.round(families.indexOf(f)*137.508%360)+' 68% 67%)';
 const costs=rows.map(r=>r.cost).filter(n=>Number.isFinite(n)&&n>=0);
@@ -156,6 +159,7 @@ function update(patch){state=normalize({...state,...patch});render();persist();}
 function visible(){return allUnhidden().filter(canPlot);}
 function allUnhidden(){return rows.filter(r=>!state.hidden.includes(r.family));}
 function frontier(list){
+if(new Set(list.map(r=>r.version)).size>1)return [];
 let best=-Infinity,bestCost=null;
 return [...list].sort((a,b)=>a.cost-b.cost||score(b)-score(a)).filter(r=>{
 const value=score(r);
@@ -250,7 +254,7 @@ svgEl('line',{x1:X,y1:g.t,x2:X,y2:g.b,stroke:'#94a3b8','stroke-opacity':.13});
 svgEl('text',{x:X,y:g.b+23,'text-anchor':'middle',fill:'#90a4bd','font-size':11,'font-family':'system-ui'},plot,formatTickCost(value));
 }
 svgEl('text',{x:(g.l+g.r)/2,y:g.h-29,'text-anchor':'middle',fill:'#8ba5c1','font-size':12,'font-family':'system-ui'},plot,'Cost per Intelligence Index task (USD)');
-svgEl('text',{x:(g.l+g.r)/2,y:g.h-10,'text-anchor':'middle',fill:'#95a9c2','font-size':11,'font-family':'system-ui'},plot,'Source: Artificial Analysis · Index v'+version+' · '+payload.as_of);
+svgEl('text',{x:(g.l+g.r)/2,y:g.h-10,'text-anchor':'middle',fill:'#95a9c2','font-size':11,'font-family':'system-ui'},plot,'Source: Artificial Analysis · '+versionLabel+(mixed?' · Gemini refreshed '+payload.gemini_review_as_of:' · '+payload.as_of));
 svgEl('text',{x:17,y:(g.t+g.b)/2,transform:'rotate(-90 17 '+((g.t+g.b)/2)+')','text-anchor':'middle',fill:'#8ba5c1','font-size':12,'font-family':'system-ui'},plot,m.unit);
 const points=svgEl('g',{'clip-path':'url(#points-clip)'});
 const efficient=frontier(list);
@@ -267,7 +271,7 @@ currentPointPositions.push({id:r.id,x:X,y:Y});
 if(r.id===state.selected)svgEl('circle',{cx:X,cy:Y,r:12,fill:'none',stroke:'#fbbf24','stroke-width':2.5,'pointer-events':'none'},points);
 // The visible dot stays small, but a transparent hit area makes taps easier.
 const referenceLabel=r.id===gpt56High?.id?'GPT-5.6 Sol High':'GPT-6 High';
-const accessibleName=isReference?referenceLabel+' historical API reference, Index v4.3.2':r.name;
+const accessibleName=isReference?referenceLabel+' historical API reference, Index v4.3.2':displayName(r);
 svgEl('circle',{cx:X,cy:Y,r:16,fill:'transparent','data-id':r.id,role:'button','aria-label':accessibleName+', '+formatValue(score(r))+', '+formatCost(r.cost)+' per task',style:'cursor:pointer'},points);
 if(isReference){
  const radius=7;
@@ -277,7 +281,7 @@ if(isReference){
 }else{
  svgEl('circle',{cx:X,cy:Y,r:r.id===state.selected?7.4:6.3,fill:familyColor(r.family),stroke:'#102034','stroke-width':1.3,'pointer-events':'none'},points);
 }
-if(state.pointLabels)pointLabels.push({r,X,Y,isReference,label:isReference?referenceLabel+' · v4.3.2':r.name});
+if(state.pointLabels)pointLabels.push({r,X,Y,isReference,label:isReference?referenceLabel+' · v4.3.2':displayName(r)});
 // No SVG <title>: mobile browsers can show native tooltips beside points.
 }
 // Labels render above all markers, but never intercept chart gestures.
@@ -321,9 +325,9 @@ svgEl('text',{x:(g.l+g.r)/2,y:(g.t+g.b)/2+18,'text-anchor':'middle',fill:'#8ca8c
 el('visible-count').innerHTML=unhidden.length+' <em>/ '+rows.length+'</em>';
 el('visible-label').textContent=list.length+' plottable in selected benchmark'+(references.length?' + '+references.length+' historical reference'+(references.length===1?'':'s'):'');
 el('historical-chart-note').hidden=!references.length;
-el('metric-context').textContent=m.name+' · '+m.desc;
+el('metric-context').textContent=m.name+' · '+m.desc+(new Set(list.map(r=>r.version)).size>1?' · Mixed suite versions; frontier hidden.':'');
 el('axis-units').textContent=m.unit+' · higher is better';
-el('score-column').textContent=m.key==='index'?'Intelligence v'+version:m.short;
+el('score-column').textContent=m.key==='index'?'Intelligence '+versionLabel:m.short;
 el('download-csv').disabled=archive?!unhidden.length:!selected;
 el('cost-note').textContent=state.scale==='log'?'Log scale plots positive published costs only.':costs.includes(0)?'Linear scale includes costs published as $0.00.':'';
 el('range-display').textContent=formatCost(state.scale==='log'?10**state.start:state.start)+' – '+formatCost(state.scale==='log'?10**(state.start+span()):state.start+span())+' / task';
@@ -383,13 +387,13 @@ function drawDetail(){
 const r=rows[state.selected],m=metricFor();
 if(!r||state.hidden.includes(r.family)){details.innerHTML='<p class="panel-intro">Select a visible model to see its benchmarks.</p>';return;}
 details.replaceChildren();
-const name=document.createElement('div');name.className='model-name';name.textContent=r.name;
+const name=document.createElement('div');name.className='model-name';name.textContent=displayName(r);
 const sub=document.createElement('div');sub.className='model-sub';
 const creator=payload.creators?.[r.family];
-sub.textContent=r.family+(creator&&creator!==r.family?' · '+creator:'')+' · Index v'+version+' · '+payload.as_of
+sub.textContent=r.family+(creator&&creator!==r.family?' · '+creator:'')+' · Index v'+r.version+' · '+r.date
  +(payload.model_status?.[r.name]?' · '+payload.model_status[r.name]:'');
 const stats=document.createElement('div');stats.className='stat-row';
-const measurements=[['Intelligence v'+version,formatValue(r.scores[0],metrics[0])],['Cost / task',formatCost(r.cost)]];
+const measurements=[['Intelligence v'+r.version,formatValue(r.scores[0],metrics[0])],['Cost / task',formatCost(r.cost)]];
 if(m.key!=='index')measurements.push([m.short,formatValue(score(r),m)]);
 for(const [label,value] of measurements){
 const wrap=document.createElement('div');wrap.className='stat-box';
@@ -416,6 +420,7 @@ details.append(stats,heading,values);
 const links=document.createElement('div');links.className='source-links';
 const sources=[['Artificial Analysis model ↗',payload.model_sources?.[r.name]||payload.sources?.[r.family]||leaderboard]];
 if(payload.component_sources?.[r.name])sources.push(['Component score source ↗',payload.component_sources[r.name]]);
+for(const [metric,url] of Object.entries(payload.model_metric_sources?.[r.name]||{}))sources.push([(metric==='index_cost'?'Current index & cost':metric)+' ↗',url]);
 for(const [label,url] of sources){
 const link=document.createElement('a');link.className='detail-link';link.href=url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=label;links.append(link);
 }
@@ -426,7 +431,7 @@ const value=el('search').value.trim().toLowerCase(),m=metricFor(),efficient=new 
 body.replaceChildren();
 allUnhidden().filter(r=>!value||(r.name+' '+r.family).toLowerCase().includes(value)).sort((a,b)=>(a.cost??Infinity)-(b.cost??Infinity)||a.name.localeCompare(b.name)).forEach(r=>{
 const tr=document.createElement('tr');if(r.id===state.selected)tr.classList.add('selected');
-const status=!Number.isFinite(score(r))?'Score unavailable':!Number.isFinite(r.cost)?'Cost unavailable':!canPlot(r)?'Linear scale only':efficient.has(r.id)?'Frontier':'Other';
+const status=!Number.isFinite(score(r))?'Score unavailable':!Number.isFinite(r.cost)?'Cost unavailable':!canPlot(r)?'Linear scale only':new Set(visible().map(x=>x.version)).size>1?'Mixed versions':efficient.has(r.id)?'Frontier':'Other';
 for(const text of [r.name,r.family,formatCost(r.cost),formatValue(score(r),m),status]){
 const td=document.createElement('td');td.textContent=text;
 if(text==='Frontier')td.className='status-yes';if(!canPlot(r)&&text===status)td.className='status-no';
@@ -434,7 +439,7 @@ tr.appendChild(td);
 }
 const select=()=>{state.selected=r.id;render();el('benchmark-chart').scrollIntoView({behavior:'smooth',block:'start'});persist();};
 tr.addEventListener('click',select);
-const modelButton=document.createElement('button');modelButton.type='button';modelButton.className='table-model';modelButton.textContent=r.name;
+const modelButton=document.createElement('button');modelButton.type='button';modelButton.className='table-model';modelButton.textContent=displayName(r);
 tr.firstChild.replaceChildren(modelButton);
 body.appendChild(tr);
 });
@@ -489,7 +494,7 @@ const m=metricFor();
 const head=['Snapshot date','Index version','Model','Family','Cost per Intelligence Index task (USD)',...metrics.map(x=>x.name),'Visible frontier','Artificial Analysis model source','Component score source'];
 const ef=new Set(frontier(visible()).map(r=>r.id));
 const exported=allUnhidden().filter(r=>archive||r.id===state.selected);
-const items=exported.map(r=>[payload.as_of,version,r.name,r.family,r.cost,...r.scores,canPlot(r)?ef.has(r.id)?'Yes':'No':'',payload.model_sources?.[r.name]||leaderboard,payload.component_sources?.[r.name]]);
+const items=exported.map(r=>[r.date,r.version,r.name,r.family,r.cost,...r.scores,canPlot(r)?ef.has(r.id)?'Yes':'No':'',payload.model_sources?.[r.name]||leaderboard,payload.component_sources?.[r.name]]);
 const encode=row=>row.map(v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"').join(',');
 const csv=[head,...items].map(encode).join('\r\n');
 const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));

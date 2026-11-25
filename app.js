@@ -171,7 +171,7 @@ const ns='http://www.w3.org/2000/svg';
 function svgEl(tag,attrs={},parent=plot,text){
 const elem=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))elem.setAttribute(k,String(v));if(text!==undefined)elem.textContent=String(text);parent.appendChild(elem);return elem;
 }
-function geometry(){const rect=plot.getBoundingClientRect(),floating=plot.parentElement.classList.contains('is-floating'),w=Math.max(floating?220:310,rect.width||800),h=Math.max(floating?125:340,rect.height||465);return {w,h,l:w<500?(floating?43:53):66,r:w-18,t:29,b:h-(floating?55:76)};}
+function geometry(){const rect=plot.getBoundingClientRect(),floating=plot.parentElement.classList.contains('is-floating'),w=Math.max(floating?220:310,rect.width||800),h=Math.max(floating?125:340,rect.height||465);return {w,h,l:w<500?(floating?43:53):66,r:w-18,t:29,b:h-(floating?70:76)};}
 function niceYStep(raw){
  const magnitude=10**Math.floor(Math.log10(Math.max(raw,0.000001)));
  const scale=raw/magnitude;
@@ -585,6 +585,7 @@ function setupFloatingChart(){
    toggle.setAttribute('aria-pressed',String(next));
    toggle.querySelector('span').textContent=next?'Dock chart':'Float chart';
    toggle.title=next?'Return chart to its original position':'Float chart while scrolling';
+   toggle.setAttribute('aria-label',next?'Dock chart':'Float chart');
    requestAnimationFrame(drawChart);
  }
  toggle.addEventListener('click',()=>setFloating(!floating));

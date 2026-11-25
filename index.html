@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#0b1220">
 <meta name="description" content="Compare current AI models on Artificial Analysis Intelligence Index v5.0.1, its component benchmarks, and cost per task.">
 <title>AI Benchmark Explorer — Intelligence vs Cost</title>
-<link rel="stylesheet" href="./style.css?v=20261125-chart-pip">
+<link rel="stylesheet" href="./style.css?v=20261125-chart-pip2">
 <script defer src="./data.js?v=20261125-gemini"></script>
 <script defer src="./archive-data.js?v=20261028"></script>
 <script defer src="./updates.js?v=20261106"></script>
-<script defer src="./app.js?v=20261125-chart-pip"></script>
+<script defer src="./app.js?v=20261125-chart-pip2"></script>
 <link rel="icon" type="image/png" sizes="180x180" href="./apple-touch-icon.png?v=1">
 <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png?v=1">
 </head>
@@ -67,7 +67,7 @@
     <p class="modes-footnote">ChatGPT High is a product-level preset. Chart values are Artificial Analysis API High references, not separately measured ChatGPT scores or subscription costs. Historical v4.3.2 reference points are marked and excluded from the current frontier. <a href="https://help.openai.com/en/articles/6825453-chatgpt-release-notes" target="_blank" rel="noopener noreferrer">OpenAI release notes ↗</a></p>
   </section>
   <section class="dashboard" id="benchmark-chart" aria-label="Model comparison chart">
-    <div class="section-title"><div><span class="section-kicker">01 / EXPLORE</span><h2>Benchmark performance</h2></div><div class="chart-title-actions"><button type="button" id="chart-pip" class="subtle-button chart-pip-button" aria-pressed="false" aria-controls="chart-float-panel" title="Float chart while scrolling"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><rect x="12" y="12" width="9" height="8" rx="1.5" fill="currentColor" stroke="none"/></svg><span>Float chart</span></button><button type="button" id="download-csv" class="subtle-button">↓ Export model CSV</button></div></div>
+    <div class="section-title"><div><span class="section-kicker">01 / EXPLORE</span><h2>Benchmark performance</h2></div><div class="chart-title-actions"><button type="button" id="chart-pip" class="subtle-button chart-pip-button" aria-label="Float chart" aria-pressed="false" aria-controls="chart-float-panel" title="Float chart while scrolling"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><rect x="12" y="12" width="9" height="8" rx="1.5" fill="currentColor" stroke="none"/></svg><span>Float chart</span></button><button type="button" id="download-csv" class="subtle-button">↓ Export model CSV</button></div></div>
     <div class="metrics-header"><span class="control-label">Y-AXIS · BENCHMARK</span><span id="metric-context">Higher is better</span></div>
     <div class="metric-buttons" id="metric-buttons" role="group" aria-label="Select benchmark"></div>
     <div class="chart-toolbar">
